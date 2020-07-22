@@ -1,4 +1,4 @@
-#nSlavingEngine
+# nSlavingEngine
 #### Welcome to the nSlavingEngine library for processing. Following you will find a guide on how to use it the best way.
 
 ## The Level Manager
@@ -98,6 +98,8 @@ if(LevelHandler.getCurrentLevelID().equalsIgnoreCase("mainMenu"))
 ---
 ### Full Level Management example
 ```
+import nse.levels.*;
+
 void setup()
 {
     //creating the "mainMenu" level
@@ -128,6 +130,8 @@ void mainMenuUpdate()
 
 ## The InputManager
 The input manager will handle user Input, it is mainly used to setup custom input locally.
+
+***WARNING: WHEN USING THE INPUTMANAGER IN A CLASS, MAKE SURE THE CLASS IS DECLARED AS PUBLIC***
 #### Method List
 1. Constructor - `InputManager(PApplet myApplet, Object myParent)`
   * Will create a custom InputManager that can be used locally.
@@ -147,8 +151,108 @@ To customize events as you would for example with processing's `void keyReleased
 3. Customizing the mousePressed event - `void nseMousePressed()`
 4. Customizing the mouseReleased event - `void nseMouseReleased()`
 5. Customizing the mouseClicked event - `void nseMouseClicked()`
-
 ---
+### Full Level Management example
+```
+import nse.levels.*;
+import nse.input.*;
+
+PApplet appRef = this; //main app reference
+Player p = new Player(10);
+
+void setup()
+{
+    //creating the "game" level
+    LevelHandler.createLevel(0,"game",this);
+
+    //setting the startup level
+    LevelHandler.loadLevel(0);
+}
+
+void draw()
+{
+    LevelHandler.displayLevel(); //drawing the currently selected level
+}
+
+//setting up the "game" start method
+void gameStart()
+{
+    p.setPoisition(width/2,height/2);
+    println("game initialized");
+}
+
+//setting up the "game" update method
+void gameUpdate()
+{
+    background(0);
+    p.display();
+}
+
+//Player class using the custom InputManager
+public class Player
+{
+  private float x, y;
+  private float w, h;
+  private float speed;
+  
+  private InputManager im; //creating a custom InputManager
+  
+  private boolean left,right,up,down;
+  
+  Player(float speed)
+  {
+    x = 0;
+    y = 0;
+    w = 100;
+    h = 100;
+    this.speed = speed;
+    im = new InputManager(appRef,this); //initializing the InputManager with the main applet reference and using this as parent
+  }
+  
+  void display()
+  {
+    float curXSpeed = 0;
+    float curYSpeed = 0;
+    if(right && !left) curXSpeed = speed;
+    if(!right && left) curXSpeed = -speed;
+    if((!right && !left) || (right && left)) curXSpeed = 0;
+    if(up && !down) curYSpeed = -speed;
+    if(!up && down) curYSpeed = speed;
+    if((!up && !down) || (up && down)) curYSpeed = 0;
+    
+    x += curXSpeed;
+    y += curYSpeed;
+    
+    rectMode(CENTER);
+    rect(x,y,w,h);
+    rectMode(CORNER);
+  }
+  
+  //defining the InputManager keyPressed locally in the class
+  void nseKeyPressed()
+  {
+    if(key == 'w') up = true;
+    if(key == 'a') left = true;
+    if(key == 's') down = true;
+    if(key == 'd') right = true;
+  }
+  
+  //defining the InputManager keyReleased locally in the class
+  void nseKeyReleased()
+  {
+    if(key == 'w') up = false;
+    if(key == 'a') left = false;
+    if(key == 's') down = false;
+    if(key == 'd') right = false;
+  }
+  
+  void setPoisition(float x, float y)
+  {
+    this.x = x;
+    this.y = y;
+  }
+}
+```
 Ant is a Java-based build tool. For [more information](http://ant.apache.org/faq.html#what-is-ant) visit the [Ant web site](http://ant.apache.org/). Ant uses a file named `build.xml` to store build settings for a project.
 
 Javadoc is an application that creates an HTML-based API documentation of Java code. You can check for its existence by typing `javadoc` on the command line. On Mac OS X, it is installed by default. On Windows and Linux, installing the JDK will also install the Javadoc tool. 
