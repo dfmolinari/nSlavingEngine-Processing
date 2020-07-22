@@ -7,10 +7,13 @@ import java.security.InvalidParameterException;
 
 /**
  * Level class used to define levels and their content.
+ *
+ * @author Davide Furfaro
  */
 public class LevelBlueprint {
 
-    protected PApplet myParent;
+    private Object myParent;
+    private Object[] args = new Object[1];
 
     protected String name;
     protected int id;
@@ -27,17 +30,15 @@ public class LevelBlueprint {
      *
      * @param id the level ID
      * @param name the level name
-     * @param start the start function name
-     * @param update the update function name
      * @param myParent the main applet used
      */
-    public LevelBlueprint(int id, String name, String start, String update, PApplet myParent){
+    public LevelBlueprint(int id, String name, Object myParent){
         this.myParent = myParent;
         this.id = id;
         this.name = name;
 
-        this.start = start;
-        this.update = update;
+        start = name+"Start";
+        update = name+"Update";
 
         resetLevel = true;
 
@@ -49,17 +50,26 @@ public class LevelBlueprint {
     }
 
     /**
-     * Executes the start method once then executes the update method
+     * Executes the start method once then executes the update method.
      */
     public void content()
     {
         if(resetLevel)
         {
-            myParent.method(start);
-
+            try {
+                myParent.getClass().getMethod(start).invoke(myParent);
+            } catch(ReflectiveOperationException e)
+            {
+                throw new RuntimeException(e);
+            }
             resetLevel = false;
         }
-        myParent.method(update);
+        try {
+            myParent.getClass().getMethod(update).invoke(myParent);
+        } catch(ReflectiveOperationException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

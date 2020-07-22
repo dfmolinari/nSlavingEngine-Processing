@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Level Management class used to Create, Load and Display levels for your game.
+ *
+ * @author Davide Furfaro
  */
 public class LevelHandler {
 
