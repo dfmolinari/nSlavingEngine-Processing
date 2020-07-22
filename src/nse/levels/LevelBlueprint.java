@@ -77,12 +77,12 @@ public class LevelBlueprint {
      *
      * @return int
      */
-    public int getID() { return id; }
+    protected int getID() { return id; }
 
     /**
      * Returns the level name.
      *
      * @return String
      */
-    public String getName() { return name; }
+    protected String getName() { return name; }
 }
