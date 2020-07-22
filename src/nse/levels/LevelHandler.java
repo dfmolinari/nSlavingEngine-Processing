@@ -25,7 +25,11 @@ public class LevelHandler {
         currentLevel = null;
         for(LevelBlueprint n : levelList)
         {
-            if(n.id == id) currentLevel = n;
+            if(n.getID() == id)
+            {
+                currentLevel = n;
+                currentLevel.resetLevel = true;
+            }
         }
         if(currentLevel == null) throw new InvalidParameterException("Cannot load level: " + id + "; It does not exist");
     }
@@ -41,7 +45,11 @@ public class LevelHandler {
         currentLevel = null;
         for(LevelBlueprint n : levelList)
         {
-            if(n.name.equalsIgnoreCase(name)) currentLevel = n;
+            if(n.getName().equalsIgnoreCase(name))
+            {
+                currentLevel = n;
+                currentLevel.resetLevel = true;
+            }
         }
         if(currentLevel == null) throw new InvalidParameterException("Cannot load level: " + name + "; It does not exist");
     }
@@ -62,4 +70,7 @@ public class LevelHandler {
     {
         currentLevel.content();
     }
+
+    public static int getCurrentLevelID() { return currentLevel.getID(); }
+    public static String getCurrentLevelName() { return currentLevel.getName(); }
 }

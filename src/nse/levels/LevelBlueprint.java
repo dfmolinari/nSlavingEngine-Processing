@@ -15,8 +15,8 @@ public class LevelBlueprint {
     private Object myParent;
     private Object[] args = new Object[1];
 
-    protected String name;
-    protected int id;
+    private String name;
+    private int id;
 
     protected boolean resetLevel;
 

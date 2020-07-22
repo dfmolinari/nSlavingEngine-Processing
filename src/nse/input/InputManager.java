@@ -4,7 +4,9 @@ import processing.core.PApplet;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 /**
  * Input Management class used to handle input locally
@@ -21,10 +23,6 @@ public class InputManager {
      * Indicates whether a key is being pressed or not.
      */
     public boolean keyPressed;
-    /**
-     * Represents the key that is sending the event.
-     */
-    public int key;
 
     /**
      * Indicates whether a mouse button is being pressed or not.
@@ -45,7 +43,6 @@ public class InputManager {
     public InputManager(PApplet myApplet, Object myParent)
     {
         keyPressed = false;
-        key = 0;
         this.myApplet = myApplet;
         this.myParent = myParent;
         myApplet.registerMethod("keyEvent",this);
@@ -63,12 +60,10 @@ public class InputManager {
         {
             case KeyEvent.PRESS:
                 keyPressed = true;
-                key = e.getKeyCode();
                 onKeyPressed();
                 break;
             case KeyEvent.RELEASE:
                 keyPressed = false;
-                key = e.getKeyCode();
                 onKeyReleased();
                 break;
         }

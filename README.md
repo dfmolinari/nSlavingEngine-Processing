@@ -1,30 +1,27 @@
-The following describes how to set up a Processing Library project in Eclipse and build it successfully, and to make your Library ready for distribution.
+Welcome to the nSlavingEngine library for processing. Following you will find a guide on how to use it the best way.
 
-## Import to Eclipse
+## The Level Manager
 
 There are two options to import the template project into Eclipse: using a Git [fork](https://help.github.com/articles/fork-a-repo) or using a downloaded package. If you are not familiar with Git or GitHub, you should opt for the downloaded package.
 
-### Option A: GitHub
+### LevelHandler
 
-1. Fork the template repository to use as a starting point.
-  * Navigate to https://github.com/processing/processing-library-template in your browser.
-  * Click the "Fork" button in the top-right of the page.
-  * Once your fork is ready, open the new repository's "Settings" by clicking the link in the menu bar on the right.
-  * Change the repository name to the name of your Library and save your changes.
-  * NOTE: GitHub only allows you to fork a project once. If you need to create multiple forks, you can follow these [instructions](https://beeznest.wordpress.com/2013/12/26/creating-multiple-forks-using-upstream-branches/).
-1. Clone your new repository to your Eclipse workspace.
-  * Open Eclipse and select the File → Import... menu item.
-  * Select Git → Projects from Git, and click "Next >".
-  * Select "URI" and click "Next >". 
-  * Enter your repository's clone URL in the "URI" field. The remaining fields in the "Location" and "Connection" groups will get automatically filled in.
-  * Enter your GitHub credentials in the "Authentication" group, and click "Next >".
-  * Select the `master` branch on the next screen, and click "Next >".
-  * The default settings on the "Local Configuration" screen should work fine, click "Next >".
-  * Make sure "Import existing projects" is selected, and click "Next >".
-  * Eclipse should find and select the `processing-library-template` automatically, click "Finish".
-1. Rename your Eclipse project.
-  * In the Package Explorer, right-click (ctrl-click) on the folder icon of the `processing-library-template` project, and select Refactor → Rename... from the menu that pops up. 
-  * Give the project the name of your Library, and click "OK".
+The LevelHandler will handle level selection and display.
+
+# Method List
+
+1. LevelHandler.loadLevel(int id)
+  * This method loads the level with the corresponding ID if it exists. If a matching level cannot be found it will result in an error.
+  * Example usage: LevelHandler.loadLevel(2);
+2. LevelHandler.loadLevel(String name)
+  * This method loads the level with the corresponding name if it exists. If a matching level cannot be fount it will result in an error.
+  * Example usage: LevelHandler.loadLevel("mainMenu");
+3. LevelHandler.createLevel(LevelBlueprint b)
+  * This method will load the passed level to the level list.
+  * Example usage:
+    * LevelHandler.createLevel(new LevelBlueprint(0, "mainMenu", this));
+    * LevelBlueprint b = new LevelBlueprint(0, "mainMenu", this));
+      LevelHandler.createLevel(b);
   
 ### Option B: Downloaded Package
 
