@@ -15,7 +15,7 @@ public class NSEBox {
     private PFont font;
     private float fontSize;
 
-    NSEBox(float x, float y, float w, float h, BoxType type, String label, int baseColor, int textColor, PImage img, float fontSize, PFont font, PApplet myApplet){
+    public NSEBox(float x, float y, float w, float h, BoxType type, String label, int baseColor, int textColor, PImage img, float fontSize, PFont font, PApplet myApplet){
         this.x = x;
         this.y = y;
         this.w = w;
@@ -27,6 +27,7 @@ public class NSEBox {
         this.img = img;
         this.fontSize = fontSize;
         this.font = font;
+        this.myApplet = myApplet;
     }
 
     public void display(){
