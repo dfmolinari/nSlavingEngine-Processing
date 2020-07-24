@@ -16,22 +16,8 @@ import java.util.ArrayList;
  */
 public class InputManager {
 
-    private PApplet myApplet;
-    private Object myParent;
-
-    /**
-     * Indicates whether a key is being pressed or not.
-     */
-    public boolean keyPressed;
-
-    /**
-     * Indicates whether a mouse button is being pressed or not.
-     */
-    public boolean mousePressed;
-    /**
-     * Represents the button that is sending the event.
-     */
-    public int mouseButton;
+    private PApplet m_myApplet;
+    private Object m_myParent;
 
     /**
      * A constructor, usually called from setup. ||
@@ -42,11 +28,10 @@ public class InputManager {
      */
     public InputManager(PApplet myApplet, Object myParent)
     {
-        keyPressed = false;
-        this.myApplet = myApplet;
-        this.myParent = myParent;
-        myApplet.registerMethod("keyEvent",this);
-        myApplet.registerMethod("mouseEvent", this);
+        m_myApplet = myApplet;
+        m_myParent = myParent;
+        m_myApplet.registerMethod("keyEvent",this);
+        m_myApplet.registerMethod("mouseEvent", this);
     }
 
     /**
@@ -59,11 +44,9 @@ public class InputManager {
         switch(e.getAction())
         {
             case KeyEvent.PRESS:
-                keyPressed = true;
                 onKeyPressed();
                 break;
             case KeyEvent.RELEASE:
-                keyPressed = false;
                 onKeyReleased();
                 break;
         }
@@ -76,10 +59,10 @@ public class InputManager {
     private void onKeyPressed()
     {
         try {
-            for(Method m : myParent.getClass().getMethods())
+            for(Method m : m_myParent.getClass().getMethods())
             {
                 if(m.getName().equalsIgnoreCase("nseKeyPressed"))
-                    myParent.getClass().getMethod("nseKeyPressed").invoke(myParent);
+                    m_myParent.getClass().getMethod("nseKeyPressed").invoke(m_myParent);
             }
         } catch(ReflectiveOperationException e)
         {
@@ -94,10 +77,10 @@ public class InputManager {
     private void onKeyReleased()
     {
         try {
-            for(Method m : myParent.getClass().getMethods())
+            for(Method m : m_myParent.getClass().getMethods())
             {
                 if(m.getName().equalsIgnoreCase("nseKeyReleased"))
-                    myParent.getClass().getMethod("nseKeyReleased").invoke(myParent);
+                    m_myParent.getClass().getMethod("nseKeyReleased").invoke(m_myParent);
             }
         } catch(ReflectiveOperationException e)
         {
@@ -115,17 +98,12 @@ public class InputManager {
         switch(e.getAction())
         {
             case MouseEvent.PRESS:
-                mousePressed = true;
-                mouseButton = e.getButton();
                 onMousePressed();
                 break;
             case MouseEvent.RELEASE:
-                mousePressed = false;
-                mouseButton = e.getButton();
                 onMouseReleased();
                 break;
             case MouseEvent.CLICK:
-                mouseButton = e.getButton();
                 onMouseClicked();
                 break;
         }
@@ -138,10 +116,10 @@ public class InputManager {
     private void onMousePressed()
     {
         try {
-            for(Method m : myParent.getClass().getMethods())
+            for(Method m : m_myParent.getClass().getMethods())
             {
                 if(m.getName().equalsIgnoreCase("nseMousePressed"))
-                    myParent.getClass().getMethod("nseMousePressed").invoke(myParent);
+                    m_myParent.getClass().getMethod("nseMousePressed").invoke(m_myParent);
             }
         } catch(ReflectiveOperationException e)
         {
@@ -156,10 +134,10 @@ public class InputManager {
     private void onMouseReleased()
     {
         try {
-            for(Method m : myParent.getClass().getMethods())
+            for(Method m : m_myParent.getClass().getMethods())
             {
                 if(m.getName().equalsIgnoreCase("nseMouseReleased"))
-                    myParent.getClass().getMethod("nseMouseReleased").invoke(myParent);
+                    m_myParent.getClass().getMethod("nseMouseReleased").invoke(m_myParent);
             }
         } catch(ReflectiveOperationException e)
         {
@@ -174,10 +152,10 @@ public class InputManager {
     private void onMouseClicked()
     {
         try {
-            for(Method m : myParent.getClass().getMethods())
+            for(Method m : m_myParent.getClass().getMethods())
             {
                 if(m.getName().equalsIgnoreCase("nseMouseClicked"))
-                    myParent.getClass().getMethod("nseMouseClicked").invoke(myParent);
+                    m_myParent.getClass().getMethod("nseMouseClicked").invoke(m_myParent);
             }
         } catch(ReflectiveOperationException e)
         {

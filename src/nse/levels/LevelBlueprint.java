@@ -12,16 +12,15 @@ import java.security.InvalidParameterException;
  */
 public class LevelBlueprint {
 
-    private Object myParent;
-    private Object[] args = new Object[1];
+    private Object m_myParent;
 
-    private String name;
-    private int id;
+    private String m_name;
+    private int m_nId;
 
-    protected boolean resetLevel;
+    protected boolean m_resetLevel;
 
-    protected String start;
-    protected String update;
+    protected String m_start;
+    protected String m_update;
 
     /**
      * A constructor, usually called when adding a new level from the LevelHandler
@@ -33,19 +32,19 @@ public class LevelBlueprint {
      * @param myParent the main applet used
      */
     public LevelBlueprint(int id, String name, Object myParent){
-        this.myParent = myParent;
-        this.id = id;
-        this.name = name;
+        m_myParent = myParent;
+        m_nId = id;
+        m_name = name;
 
-        start = name+"Start";
-        update = name+"Update";
+        m_start = name+"Start";
+        m_update = name+"Update";
 
-        resetLevel = true;
+        m_resetLevel = true;
 
-        for(LevelBlueprint n : LevelHandler.levelList)
+        for(LevelBlueprint n : LevelHandler.s_levelList)
         {
-            if(id == n.id) throw new InvalidParameterException("Cannot create level: " + id + "; A level with the same ID is already existing");
-            else if(name.equalsIgnoreCase(n.name)) throw new InvalidParameterException("Cannot create level: " + name + "; A level with the same Name is already existing");
+            if(id == n.m_nId) throw new InvalidParameterException("Cannot create level: " + id + "; A level with the same ID is already existing");
+            else if(name.equalsIgnoreCase(n.m_name)) throw new InvalidParameterException("Cannot create level: " + name + "; A level with the same Name is already existing");
         }
     }
 
@@ -54,18 +53,18 @@ public class LevelBlueprint {
      */
     public void content()
     {
-        if(resetLevel)
+        if(m_resetLevel)
         {
             try {
-                myParent.getClass().getMethod(start).invoke(myParent);
+                m_myParent.getClass().getMethod(m_start).invoke(m_myParent);
             } catch(ReflectiveOperationException e)
             {
                 throw new RuntimeException(e);
             }
-            resetLevel = false;
+            m_resetLevel = false;
         }
         try {
-            myParent.getClass().getMethod(update).invoke(myParent);
+            m_myParent.getClass().getMethod(m_update).invoke(m_myParent);
         } catch(ReflectiveOperationException e)
         {
             throw new RuntimeException(e);
@@ -77,12 +76,12 @@ public class LevelBlueprint {
      *
      * @return int
      */
-    protected int getID() { return id; }
+    protected int getID() { return m_nId; }
 
     /**
      * Returns the level name.
      *
      * @return String
      */
-    protected String getName() { return name; }
+    protected String getName() { return m_name; }
 }

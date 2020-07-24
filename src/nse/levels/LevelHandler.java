@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class LevelHandler {
 
-    static protected ArrayList<LevelBlueprint> levelList = new ArrayList<LevelBlueprint>();
+    static protected ArrayList<LevelBlueprint> s_levelList = new ArrayList<LevelBlueprint>();
 
-    static private LevelBlueprint currentLevel = null;
+    static private LevelBlueprint s_currentLevel = null;
 
     /**
      * Sets the current level to the level with the corresponding ID ||
@@ -22,16 +22,16 @@ public class LevelHandler {
      */
     public static void loadLevel(int id)
     {
-        currentLevel = null;
-        for(LevelBlueprint n : levelList)
+        s_currentLevel = null;
+        for(LevelBlueprint n : s_levelList)
         {
             if(n.getID() == id)
             {
-                currentLevel = n;
-                currentLevel.resetLevel = true;
+                s_currentLevel = n;
+                s_currentLevel.m_resetLevel = true;
             }
         }
-        if(currentLevel == null) throw new InvalidParameterException("Cannot load level: " + id + "; It does not exist");
+        if(s_currentLevel == null) throw new InvalidParameterException("Cannot load level: " + id + "; It does not exist");
     }
 
     /**
@@ -42,16 +42,16 @@ public class LevelHandler {
      */
     public static void loadLevel(String name)
     {
-        currentLevel = null;
-        for(LevelBlueprint n : levelList)
+        s_currentLevel = null;
+        for(LevelBlueprint n : s_levelList)
         {
             if(n.getName().equalsIgnoreCase(name))
             {
-                currentLevel = n;
-                currentLevel.resetLevel = true;
+                s_currentLevel = n;
+                s_currentLevel.m_resetLevel = true;
             }
         }
-        if(currentLevel == null) throw new InvalidParameterException("Cannot load level: " + name + "; It does not exist");
+        if(s_currentLevel == null) throw new InvalidParameterException("Cannot load level: " + name + "; It does not exist");
     }
 
     /**
@@ -60,7 +60,7 @@ public class LevelHandler {
      * @param b the LevelBlueprint to add to the level list
      */
     public static void createLevel(LevelBlueprint b){
-        levelList.add(b);
+        s_levelList.add(b);
     }
 
     /**
@@ -68,9 +68,9 @@ public class LevelHandler {
      */
     public static void displayLevel()
     {
-        currentLevel.content();
+        s_currentLevel.content();
     }
 
-    public static int getCurrentLevelID() { return currentLevel.getID(); }
-    public static String getCurrentLevelName() { return currentLevel.getName(); }
+    public static int getCurrentLevelID() { return s_currentLevel.getID(); }
+    public static String getCurrentLevelName() { return s_currentLevel.getName(); }
 }
