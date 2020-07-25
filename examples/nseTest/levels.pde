@@ -41,5 +41,11 @@ void gameUpdate()
 {
   background(200);
   p.update();
+  f.update();
+  if(p.m_collider.checkCollision(f.m_collider) != 0)
+    fill(255,0,0);
+  p.display();
+  fill(255);
+  f.display();
 }
 //--------------------

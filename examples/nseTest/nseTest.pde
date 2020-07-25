@@ -1,6 +1,7 @@
 import nse.input.*;
 import nse.levels.*;
 import nse.ui.*;
+import nse.collisions.*;
 
 PApplet g_appRef = this;
 InputManager g_inputManager;
@@ -8,6 +9,7 @@ InputManager g_inputManager;
 ArrayList<NSEButton> buttons = new ArrayList<NSEButton>();
 
 Player p = new Player(10);
+Player f = new Player(11);
 
 void setup()
 {
