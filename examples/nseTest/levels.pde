@@ -34,7 +34,10 @@ void quitClick()
 //--------------------
 void gameStart()
 {
-  p.setPoisition(width/2,height/2);
+  p.setPosition(width/2,height/2);
+  f.setPosition(width/2-200,height/2-200);
+  p.m_collider.setPushable(true);
+  f.m_collider.setPushable(true);
 }
 
 void gameUpdate()
@@ -42,8 +45,11 @@ void gameUpdate()
   background(200);
   p.update();
   f.update();
-  if(p.m_collider.checkCollision(f.m_collider) != 0)
-    fill(255,0,0);
+  p.m_collider.checkCollision(f.m_collider,false);
+  f.m_collider.checkCollision(p.m_collider,false);
+  p.setPosition(p.m_collider.getPosition().x,p.m_collider.getPosition().y);
+  f.setPosition(f.m_collider.getPosition().x,f.m_collider.getPosition().y);
+  
   p.display();
   fill(255);
   f.display();

@@ -3,9 +3,8 @@ public class Player
 {
   private PVector m_position;
   private PVector m_size;
-  private float m_rotation;
 
-  private Box2D m_collider;
+  private BoxCollider2D m_collider;
 
   private float m_speed;
 
@@ -19,7 +18,7 @@ public class Player
     m_size = new PVector(150, 100);
     m_speed = speed;
     m_inputManager = new InputManager(g_appRef, this); //initializing the InputManager with the main applet reference and using this as parent
-    m_collider = new Box2D(m_position, m_size, m_rotation);
+    m_collider = new BoxCollider2D(m_position, m_size, false,this);
   }
 
   void update()
@@ -32,38 +31,29 @@ public class Player
     if (m_up && !m_down) curYSpeed = -m_speed;
     if (!m_up && m_down) curYSpeed = m_speed;
     if ((!m_up && !m_down) || (m_up && m_down)) curYSpeed = 0;
+    
+    m_collider.setVelocity(curXSpeed, curYSpeed);
 
     m_position.add(curXSpeed, curYSpeed);
     m_collider.setPosition(m_position);
-    m_collider.setRotation(m_rotation);
   }
 
   void display()
   {
     pushMatrix();
     translate(m_position.x, m_position.y);
-    rotate(m_rotation);
     rectMode(CENTER);
     rect(0, 0, m_size.x, m_size.y);
     rectMode(CORNER);
     popMatrix();
-    strokeWeight(5);
-    stroke(0, 255, 0);
-    //center to right
-    float endX = m_collider.getPosition().x+(m_collider.getSize().x/2)*(float)Math.cos(m_collider.getRotation());
-    float endY = m_collider.getPosition().y+((m_collider.getSize().x/2)*(float)Math.sin(m_collider.getRotation()));
-    line(m_collider.getPosition().x, m_collider.getPosition().y, endX, endY);
-    //right to rotated pos
-    float rotX = m_collider.getPosition().x;
-    line(endX, endY, rotX, m_collider.getPosition().y);
-    stroke(255, 0, 0);
-    float sin = (float)Math.sin(m_collider.getRotation());
-    float cos = (float)Math.cos(m_collider.getRotation());
-    float botLeftX = m_collider.getPosition().x+(-m_collider.getSize().x/2*cos)-(-m_collider.getSize().y/2*sin);
-    float botLeftY = m_collider.getPosition().y+(-m_collider.getSize().x/2*sin)+(-m_collider.getSize().y/2*cos);
-    point(botLeftX, botLeftY);
-    strokeWeight(1);
-    stroke(0);
+    
+    pushMatrix();
+    fill(0,255,0,200);
+    translate(m_collider.getPosition().x,m_collider.getPosition().y);
+    rectMode(CENTER);
+    rect(0, 0, m_collider.getSize().x, m_collider.getSize().y);
+    rectMode(CORNER);
+    popMatrix();
   }
 
   //defining the InputManager keyPressed locally in the class
@@ -75,16 +65,12 @@ public class Player
       if (key == 'a') m_left = true;
       if (key == 's') m_down = true;
       if (key == 'd') m_right = true;
-      if (key == 'e') m_rotation += HALF_PI/6;
-      if (key == 'q') m_rotation -= HALF_PI/6;
     } else if (m_speed == 11)
     {
       if (key == 'i') m_up = true;
       if (key == 'j') m_left = true;
       if (key == 'k') m_down = true;
       if (key == 'l') m_right = true;
-      if (key == CODED && keyCode == RIGHT) m_rotation += HALF_PI/6;
-      if (key == CODED && keyCode == LEFT) m_rotation -= HALF_PI/6;
     }
   }
 
@@ -106,7 +92,7 @@ public class Player
     }
   }
 
-  void setPoisition(float x, float y)
+  void setPosition(float x, float y)
   {
     m_position.set(x, y);
   }
