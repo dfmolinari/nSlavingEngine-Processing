@@ -7,7 +7,7 @@ description: Wiki
 
 An NSEButton represents an interactable UI Button.
 
-**Note: creating a button requires a *[ButtonType](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/ButtonType)***
+**Note: creating a button requires a *[ButtonType](ButtonType.md)***
 
 ### Method List
 
@@ -75,7 +75,7 @@ b.display();
 
 A level blueprint's content can be customized by creating methods with the following format `label+Click`.
 
-Be careful with button naming, for example you might have different buttons in your game with the label `Back`, this is going to mean that every button with that label will point to that method. Easy fixes for that could be checking in which level the user is located into by using the **[LevelHandler](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelHandler)** and make the button work accordingly. Other uses for this could also be a `Quit` button, every one of them pointing to the same method and acting the same without having to customize it for every button instance.
+Be careful with button naming, for example you might have different buttons in your game with the label `Back`, this is going to mean that every button with that label will point to that method. Easy fixes for that could be checking in which level the user is located into by using the **[LevelHandler](LevelHandler.md)** and make the button work accordingly. Other uses for this could also be a `Quit` button, every one of them pointing to the same method and acting the same without having to customize it for every button instance.
 
 ***WARNING: METHODS NAME ARE KEY SENSITIVE, MISTYPING A LEVEL NAME WILL RESULT IN THE ENGINE NOT FINDING THE METHOD AND RESULT IN AN ERROR***
 
