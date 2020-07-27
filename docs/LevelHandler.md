@@ -80,7 +80,7 @@ LevelHandler.removeCollider(box);
 
 9. Calculates the collision between every existing collider - `LevelHandler.calculateQuadtree()`
   * Checks the list of every existing collider(not removed from you) and calculates collisions
-  * Tip: place it after moving your objects and, before displaying them, make sure you reposition them based on the collider's location, visit [Collision Detection](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/Collision-Detection) to see how
+  * Tip: place it after moving your objects and, before displaying them, make sure you reposition them based on the collider's location, visit [Collision Detection](CollisionDetection.md) to see how
 ```java
 LevelHandler.calculateQuadtree();
 ```
