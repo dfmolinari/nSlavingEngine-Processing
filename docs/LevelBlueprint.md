@@ -1,7 +1,3 @@
-<ul>
-<li><a href="wiki.md">Home></a></li>
-</ul>
-
 # **LevelBlueprint**
 
 ### What is it?
