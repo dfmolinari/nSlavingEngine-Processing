@@ -1,3 +1,7 @@
+---
+title: nSlavingEngine
+---
+
 ## Welcome to the nSlavingEngine library
 
 Welcome to the nSlavingEngine library,
