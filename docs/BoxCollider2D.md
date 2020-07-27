@@ -9,7 +9,7 @@ A BoxCollider2D is a non-rotatable rectangle collider.
 
 ### Triggers
 
-If you don't know what triggers are, they are colliders that don't stop your movement and execute an event when entering/staying/exing it. To learn how to customize a trigger's events [click here](BoxCollider2D.md#customizing-a-colliders-trigger-events).
+If you don't know what triggers are, they are colliders that don't stop your movement and execute an event when entering/staying/exing it. To learn how to customize a trigger's events **[click here](BoxCollider2D.md#customizing-a-colliders-trigger-events)**.
 
 ### Method list
 
@@ -141,7 +141,7 @@ if(box.isPushable())
 
 A collider's on trigger events can be customized by creating methods with the following format `label+OnTrigger+Status`, where "status" can be `Enter,Stay,Exit`.
 
-Be careful with trigger naming, for example you might have different triggers in your game with the label `levelSwap`, this is going to mean that every trigger with that label will point to that method. Easy fixes for that could be checking in which level the user is located into by using the **[LevelHandler](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelHandler)** and make the trigger work accordingly.
+Be careful with trigger naming, for example you might have different triggers in your game with the label `levelSwap`, this is going to mean that every trigger with that label will point to that method. Easy fixes for that could be checking in which level the user is located into by using the **[LevelHandler](LevelHandler.md)** and make the trigger work accordingly.
 
 ***WARNING: METHODS NAME ARE KEY SENSITIVE, MISTYPING A LEVEL NAME WILL RESULT IN THE ENGINE NOT FINDING THE METHOD AND RESULT IN AN ERROR***
 
