@@ -1,6 +1,6 @@
 ---
 title: LevelManager
-description: 
+description: Wiki
 ---
 
 ### What is it?
