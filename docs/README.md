@@ -7,6 +7,6 @@ please visit the [Wiki page](https://dfmolinari.github.io/nSlavingEngine-Process
 ### Downloads
 | Version | Link |
 |---------|------|
-|         |      |
-|         |      |
-|         |      |
+|v0.9.4|https://github.com/dfmolinari/nSlavingEngine-Processing/files/4981462/nsEngine.zip|
+|v0.8.2|https://github.com/dfmolinari/nSlavingEngine-Processing/files/4969647/nsEngine.zip|
+|v0.6.0|https://github.com/dfmolinari/nsEngine/files/4959073/nsEngine.zip|
