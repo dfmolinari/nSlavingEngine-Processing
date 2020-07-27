@@ -9,7 +9,9 @@ To import the Level Manager into your project use `import nse.levels.*`.
 More on the Level Manager:
   * **[LevelBlueprint](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelBlueprint)**
   * **[LevelHandler](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelHandler)**
+
 ---
+
 ### Full Level Management example
 
 Here is an example on using the Level Manager
