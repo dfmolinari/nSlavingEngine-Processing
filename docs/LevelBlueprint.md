@@ -13,6 +13,7 @@ A LevelBlueprint contains all the necessary information to create and edit a lev
 ```java
 LevelBlueprint b = new LevelBlueprint(0, "mainMenu", appRef, this);
 ```
+
 ### Customizing a LevelBlueprint's content
 A level blueprint's content can be customized by creating methods with the following format `levelName+Start` & `levleName+Update`.
 
