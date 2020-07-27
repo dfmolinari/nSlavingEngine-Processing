@@ -1,19 +1,18 @@
-# Home
+# **Home**
 
 Welcome to the nSlavinGames - Game Engine library Wiki.
 
 **Navigation**
----
+<br>
 
-* **<a href="https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/Home">Home</a>**
-* **[Level Manager](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/Level-Manager)**
-  * **[LevelBlueprint](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelBlueprint)**
-  * **[LevelHandler](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/LevelHandler)**
-* **[InputManager](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/InputManager)**
-* **[UI Manager](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/UI-(User-Interface)-Manager)**
-  * **[NSEButton](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/NSEButton)**
-    * **[ButtonType](http://github.com/dfmolinari/nSlavingEngine-Processing/wiki/ButtonType)**
-  * **[NSEBox](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/NSEBox)**
-    * **[BoxType](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/BoxType)**
-* **[Collision Detection](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/Collision-Detection)**
-  * **[BoxCollider2D](https://github.com/dfmolinari/nSlavingEngine-Processing/wiki/BoxCollider2D)**
+* **[Level Manager](LevelManager.md)**
+  * **[LevelBlueprint](LevelBlueprint.md)**
+  * **[LevelHandler](LevelHandler.md)**
+* **[InputManager](InputManager.md)**
+* **[UI Manager](UIManager.md)**
+  * **[NSEButton](Button.md)**
+    * **[ButtonType](ButtonType.md)**
+  * **[NSEBox](Box.md)**
+    * **[BoxType](BoxType.md)**
+* **[Collision Detection](CollisionDetection.md)**
+  * **[BoxCollider2D](BoxCollider2D.md)**
