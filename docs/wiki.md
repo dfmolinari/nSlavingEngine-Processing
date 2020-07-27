@@ -1,6 +1,7 @@
-# **Wiki**
-
-Welcome to the nSlavinGames - Game Engine library Wiki.
+---
+title: Wiki
+description: Welcome to the nSlavinGames - Game Engine library Wiki.
+---
 
 **Navigation**
 
