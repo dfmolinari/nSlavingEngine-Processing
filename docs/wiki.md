@@ -1,3 +1,7 @@
+```yml
+title: Wiki
+```
+
 # **Home**
 
 Welcome to the nSlavinGames - Game Engine library Wiki.
