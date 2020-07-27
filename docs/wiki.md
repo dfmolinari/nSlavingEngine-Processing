@@ -3,7 +3,8 @@
 Welcome to the nSlavinGames - Game Engine library Wiki.
 
 **Navigation**
-<br>
+
+---
 
 * **[Level Manager](LevelManager.md)**
   * **[LevelBlueprint](LevelBlueprint.md)**
