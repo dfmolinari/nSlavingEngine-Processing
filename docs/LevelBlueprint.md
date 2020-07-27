@@ -1,4 +1,7 @@
-# **LevelBlueprint**
+---
+title: LevelBlueprint
+description: Wiki
+---
 
 ### What is it?
 
