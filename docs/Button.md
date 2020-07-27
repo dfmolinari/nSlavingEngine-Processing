@@ -1,5 +1,5 @@
 ---
-title: Button
+title: NSEButton
 description: Wiki
 ---
 
