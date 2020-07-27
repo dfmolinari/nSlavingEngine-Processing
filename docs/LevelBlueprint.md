@@ -10,7 +10,7 @@ A LevelBlueprint contains all the necessary information to create and edit a lev
   * Will create a level with the specified ID and name if it doesn't already exist, if it does it will result in an error.
   * The "myParent" parameter will represent the parent class, usually filled with the `this` keyword.
   * Example usage:
-```
+```java
 LevelBlueprint b = new LevelBlueprint(0, "mainMenu", appRef, this);
 ```
 ### Customizing a LevelBlueprint's content
@@ -19,7 +19,7 @@ A level blueprint's content can be customized by creating methods with the follo
 A start method will contain everything that will be executed when the level gets loaded, while the update will be executed every other time.
 
 ***WARNING: METHODS NAME ARE KEY SENSITIVE, MISTYPING A LEVEL NAME WILL RESULT IN THE ENGINE NOT FINDING THE METHOD AND RESULT IN AN ERROR***
-```
+```java
 //setting start method for the "game" level
 void gameStart()
 {
