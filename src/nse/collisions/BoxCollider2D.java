@@ -1,10 +1,11 @@
 package nse.collisions;
 
+import nse.levels.LevelHandler;
 import processing.core.PVector;
 
 import java.lang.reflect.Method;
 
-public class BoxCollider2D implements CollisionSide{
+public class BoxCollider2D {
 
     private PVector m_position;
     private PVector m_size;
@@ -28,6 +29,7 @@ public class BoxCollider2D implements CollisionSide{
         m_canTrigger = true;
         m_label = "";
         m_myParent = myParent;
+        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(PVector position, PVector size, boolean isTrigger, String label, Object myParent)
@@ -40,6 +42,7 @@ public class BoxCollider2D implements CollisionSide{
         m_canTrigger = true;
         m_label = label;
         m_myParent = myParent;
+        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, Object myParent)
@@ -52,6 +55,7 @@ public class BoxCollider2D implements CollisionSide{
         m_canTrigger = true;
         m_label = "";
         m_myParent = myParent;
+        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, String label, Object myParent)
@@ -64,6 +68,7 @@ public class BoxCollider2D implements CollisionSide{
         m_canTrigger = true;
         m_label = label;
         m_myParent = myParent;
+        LevelHandler.addCollider(this);
     }
 
     public PVector getPosition() { return m_position; }
@@ -80,6 +85,7 @@ public class BoxCollider2D implements CollisionSide{
 
     public boolean isTrigger() { return m_isTrigger; }
     public void setTriggerLabel(String label) { m_label = label; }
+    public String getTriggerLabel() { return m_label; }
 
     public boolean isPushable() { return m_pushable; }
     public void setPushable(boolean state) { m_pushable = state; }
@@ -90,7 +96,7 @@ public class BoxCollider2D implements CollisionSide{
         float dy = m_position.y - other.getPosition().y;
 
         float hWidths = m_size.x/2 + other.getSize().x/2;
-        float hHeights = m_size.y/2 + other.getSize().x/2;
+        float hHeights = m_size.y/2 + other.getSize().y/2;
 
         if(Math.abs(dx) < hWidths && Math.abs(dy) < hHeights)
         {
@@ -146,24 +152,24 @@ public class BoxCollider2D implements CollisionSide{
             } else {
                 if(m_isTrigger)
                 {
-                    onTriggerStay();
-                    onTriggerEnter();
+                    onTriggerStay(other);
+                    onTriggerEnter(other);
                 } else if(other.isTrigger())
                 {
-                    other.onTriggerStay();
-                    other.onTriggerEnter();
+                    other.onTriggerStay(this);
+                    other.onTriggerEnter(this);
                 }
             }
         } else
         {
-            if(m_isTrigger && m_canTrigger)
-                onTriggerExit();
-            else if(other.isTrigger() && other.m_canTrigger)
-                onTriggerExit();
+            if(m_isTrigger && !other.m_canTrigger)
+                onTriggerExit(other);
+            else if(other.isTrigger() && !m_canTrigger)
+                other.onTriggerExit(this);
         }
     }
 
-    public int checkCollision(Circle2D other)
+    /*public int checkCollision(Circle2D other)
     {
         float dx = m_position.x - other.getPosition().x;
         float dy = m_position.y - other.getPosition().y;
@@ -188,13 +194,13 @@ public class BoxCollider2D implements CollisionSide{
         }
 
         return NONE;
-    }
+    }*/
 
-    private void onTriggerEnter()
+    private void onTriggerEnter(BoxCollider2D other)
     {
-        if(m_canTrigger)
+        if(other.m_canTrigger)
         {
-            m_canTrigger = false;
+            other.m_canTrigger = false;
             try
             {
                 for(Method m : m_myParent.getClass().getMethods())
@@ -209,9 +215,9 @@ public class BoxCollider2D implements CollisionSide{
         }
     }
 
-    private void onTriggerStay()
+    private void onTriggerStay(BoxCollider2D other)
     {
-        if(!m_canTrigger)
+        if(!other.m_canTrigger)
         {
             try
             {
@@ -227,9 +233,9 @@ public class BoxCollider2D implements CollisionSide{
         }
     }
 
-    private void onTriggerExit()
+    private void onTriggerExit(BoxCollider2D other)
     {
-        m_canTrigger = false;
+        other.m_canTrigger = true;
         try
         {
             for(Method m : m_myParent.getClass().getMethods())

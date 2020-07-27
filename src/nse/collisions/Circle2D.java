@@ -2,7 +2,7 @@ package nse.collisions;
 
 import processing.core.PVector;
 
-public class Circle2D implements CollisionSide {
+public class Circle2D {
 
     private PVector m_position;
     private float m_radius;

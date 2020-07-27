@@ -4,9 +4,7 @@ import processing.core.PApplet;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * Input Management class used to handle input locally

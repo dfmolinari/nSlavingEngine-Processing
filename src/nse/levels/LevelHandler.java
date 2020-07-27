@@ -1,5 +1,7 @@
 package nse.levels;
 
+import nse.collisions.BoxCollider2D;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -13,6 +15,8 @@ public class LevelHandler {
     static protected ArrayList<LevelBlueprint> s_levelList = new ArrayList<LevelBlueprint>();
 
     static private LevelBlueprint s_currentLevel = null;
+
+    static protected ArrayList<Object> s_colliders = new ArrayList<Object>();
 
     /**
      * Sets the current level to the level with the corresponding ID ||
@@ -73,4 +77,12 @@ public class LevelHandler {
 
     public static int getCurrentLevelID() { return s_currentLevel.getID(); }
     public static String getCurrentLevelName() { return s_currentLevel.getName(); }
+
+    public static void addCollider(BoxCollider2D box) { s_colliders.add(box); }
+    public static void removeCollider(BoxCollider2D box) { s_colliders.remove(box); }
+
+    public static void executeQuadtree()
+    {
+        s_currentLevel.executeQuadtree();
+    }
 }

@@ -11,13 +11,15 @@ ArrayList<NSEButton> buttons = new ArrayList<NSEButton>();
 Player p = new Player(10);
 Player f = new Player(11);
 
+BoxCollider2D testTrigger = new BoxCollider2D(new PVector(1400,500), new PVector(100,100), true, "trigTest", this);
+
 void setup()
 {
   fullScreen();
   g_inputManager = new InputManager(g_appRef,this);
   
-  LevelHandler.createLevel(new LevelBlueprint(0,"mainMenu",this)); //creating "mainMenu" level
-  LevelHandler.createLevel(new LevelBlueprint(1,"game",this));
+  LevelHandler.createLevel(new LevelBlueprint(0,"mainMenu",g_appRef,this)); //creating "mainMenu" level
+  LevelHandler.createLevel(new LevelBlueprint(1,"game",g_appRef,this));
   
   LevelHandler.loadLevel("mainMenu"); //setting default level
 }
