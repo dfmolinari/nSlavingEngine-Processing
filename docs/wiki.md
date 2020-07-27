@@ -1,4 +1,4 @@
-<h1>Home</h1>
+Home
 
 Welcome to the nSlavinGames - Game Engine library Wiki.
 
