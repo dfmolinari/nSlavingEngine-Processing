@@ -1,27 +1,23 @@
 //Player class using the custom InputManager
-public class Player
+public class Player extends NSEScript
 {
-  private PVector m_position;
   private PVector m_size;
-
-  private BoxCollider2D m_collider;
 
   private float m_speed;
 
   private InputManager m_inputManager; //creating a custom InputManager
 
   private boolean m_left, m_right, m_up, m_down;
-
-  Player(float speed)
+  
+  void Start()
   {
-    m_position = new PVector(0, 0);
-    m_size = new PVector(150, 100);
-    m_speed = speed;
-    m_inputManager = new InputManager(g_appRef, this); //initializing the InputManager with the main applet reference and using this as parent
-    m_collider = new BoxCollider2D(m_position, m_size, false,this);
+    println("test");
+    setPosition(width/2,height/2);
+    m_size = new PVector(150,100);
+    m_inputManager = new InputManager(g_appRef, this);
   }
 
-  void update()
+  void Update()
   {
     float curXSpeed = 0;
     float curYSpeed = 0;
@@ -31,27 +27,17 @@ public class Player
     if (m_up && !m_down) curYSpeed = -m_speed;
     if (!m_up && m_down) curYSpeed = m_speed;
     if ((!m_up && !m_down) || (m_up && m_down)) curYSpeed = 0;
-    
-    m_collider.setVelocity(curXSpeed, curYSpeed);
 
-    m_position.add(curXSpeed, curYSpeed);
-    m_collider.setPosition(m_position);
+    transform.getComponent(NSETransform.class).getPosition().add(curXSpeed, curYSpeed);
+    display();
   }
 
   void display()
   {
     pushMatrix();
-    translate(m_position.x, m_position.y);
+    translate(transform.getComponent(NSETransform.class).getPosition().x, transform.getComponent(NSETransform.class).getPosition().y);
     rectMode(CENTER);
     rect(0, 0, m_size.x, m_size.y);
-    rectMode(CORNER);
-    popMatrix();
-    
-    pushMatrix();
-    fill(0,255,0,200);
-    translate(m_collider.getPosition().x,m_collider.getPosition().y);
-    rectMode(CENTER);
-    rect(0, 0, m_collider.getSize().x, m_collider.getSize().y);
     rectMode(CORNER);
     popMatrix();
   }
@@ -94,6 +80,6 @@ public class Player
 
   void setPosition(float x, float y)
   {
-    m_position.set(x, y);
+    transform.getComponent(NSETransform.class).setPosition(x, y);
   }
 }

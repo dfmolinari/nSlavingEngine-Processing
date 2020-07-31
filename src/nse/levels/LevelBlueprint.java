@@ -2,9 +2,14 @@ package nse.levels;
 
 import nse.Quadtree;
 import nse.collisions.*;
+import nse.objects.NSEObject;
+import nse.objects.NSEScript;
+import nse.objects.NSETransform;
 import processing.core.PApplet;
 
+import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ public class LevelBlueprint {
 
     private Quadtree quad;
 
+    ArrayList<NSEObject> m_gameObjects = new ArrayList<NSEObject>();
 
     /**
      * A constructor, usually called when adding a new level from the LevelHandler
@@ -68,6 +74,15 @@ public class LevelBlueprint {
         if(m_resetLevel)
         {
             try {
+                for(NSEObject o : m_gameObjects)
+                {
+                    for(Object b : o.getComponents())
+                    {
+                        if(o.getComponent(b.getClass()).getClass().isAssignableFrom(NSEScript.class))
+                            ((NSEScript)o.getComponent(b.getClass())).Start();
+                    }
+
+                }
                 m_myParent.getClass().getMethod(m_start).invoke(m_myParent);
             } catch(ReflectiveOperationException e)
             {
@@ -76,6 +91,17 @@ public class LevelBlueprint {
             m_resetLevel = false;
         }
         try {
+            for(NSEObject o : m_gameObjects)
+            {
+                for(Object b : o.getComponents())
+                {
+                    if(o.getComponent(b.getClass()).getClass().isAssignableFrom(NSEScript.class))
+                        ((NSEScript)o.getComponent(b.getClass())).Update();
+                    if(o.getComponent(b.getClass()) instanceof BoxCollider2D)
+                        o.getComponent(BoxCollider2D.class).setPosition(o.getComponent(NSETransform.class).getPosition());
+                }
+            }
+            executeQuadtree();
             m_myParent.getClass().getMethod(m_update).invoke(m_myParent);
         } catch(ReflectiveOperationException e)
         {
@@ -97,31 +123,38 @@ public class LevelBlueprint {
      */
     protected String getName() { return m_name; }
 
+    protected void addGameObject(NSEObject obj)
+    {
+
+        m_gameObjects.add(obj);
+        m_myApplet.println(m_gameObjects.size());
+    }
+
     protected void executeQuadtree()
     {
         quad.clear();
-        for(int i = 0; i < LevelHandler.s_colliders.size(); i++)
+        for(int i = 0; i < m_gameObjects.size(); i++)
         {
-            if(LevelHandler.s_colliders.get(i) instanceof BoxCollider2D)
+            if(m_gameObjects.get(i).hasComponent(BoxCollider2D.class))
             {
-                quad.insert((BoxCollider2D)LevelHandler.s_colliders.get(i));
+                quad.insert(m_gameObjects.get(i).getComponent(BoxCollider2D.class));
             }
         }
         List returnObjects = new ArrayList();
-        for(int i = 0; i < LevelHandler.s_colliders.size(); i++)
+        for(int i = 0; i < m_gameObjects.size(); i++)
         {
             returnObjects.clear();
-            if(LevelHandler.s_colliders.get(i) instanceof BoxCollider2D)
-                quad.retrieve(returnObjects, (BoxCollider2D)LevelHandler.s_colliders.get(i));
+            if(m_gameObjects.get(i).hasComponent(BoxCollider2D.class))
+                quad.retrieve(returnObjects, m_gameObjects.get(i).getComponent(BoxCollider2D.class));
 
             for(int j = 0; j < returnObjects.size(); j++)
             {
-                if(returnObjects.get(j) instanceof BoxCollider2D && LevelHandler.s_colliders.get(i) instanceof BoxCollider2D)
+                if(returnObjects.get(j) instanceof BoxCollider2D && m_gameObjects.get(i).hasComponent(BoxCollider2D.class))
                 {
-                    if(returnObjects.get(j) != LevelHandler.s_colliders.get(i))
+                    if(returnObjects.get(j) != m_gameObjects.get(i).getComponent(BoxCollider2D.class))
                     {
                         //System.out.println("checking collision between" + ((BoxCollider2D) LevelHandler.s_colliders.get(i)).getTriggerLabel() + " and " + ((BoxCollider2D)returnObjects.get(j)).getTriggerLabel());
-                        ((BoxCollider2D)LevelHandler.s_colliders.get(i)).checkCollision((BoxCollider2D)returnObjects.get(j),false);
+                        m_gameObjects.get(i).getComponent(BoxCollider2D.class).checkCollision((BoxCollider2D)returnObjects.get(j),false);
                     }
                 }
             }

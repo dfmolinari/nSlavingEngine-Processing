@@ -29,7 +29,6 @@ public class BoxCollider2D {
         m_canTrigger = true;
         m_label = "";
         m_myParent = myParent;
-        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(PVector position, PVector size, boolean isTrigger, String label, Object myParent)
@@ -42,7 +41,6 @@ public class BoxCollider2D {
         m_canTrigger = true;
         m_label = label;
         m_myParent = myParent;
-        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, Object myParent)
@@ -55,7 +53,6 @@ public class BoxCollider2D {
         m_canTrigger = true;
         m_label = "";
         m_myParent = myParent;
-        LevelHandler.addCollider(this);
     }
 
     public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, String label, Object myParent)
@@ -68,7 +65,6 @@ public class BoxCollider2D {
         m_canTrigger = true;
         m_label = label;
         m_myParent = myParent;
-        LevelHandler.addCollider(this);
     }
 
     public PVector getPosition() { return m_position; }

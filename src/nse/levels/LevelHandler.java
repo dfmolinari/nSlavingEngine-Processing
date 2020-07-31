@@ -1,6 +1,7 @@
 package nse.levels;
 
 import nse.collisions.BoxCollider2D;
+import nse.objects.NSEObject;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -15,8 +16,6 @@ public class LevelHandler {
     static protected ArrayList<LevelBlueprint> s_levelList = new ArrayList<LevelBlueprint>();
 
     static private LevelBlueprint s_currentLevel = null;
-
-    static protected ArrayList<Object> s_colliders = new ArrayList<Object>();
 
     /**
      * Sets the current level to the level with the corresponding ID ||
@@ -78,11 +77,29 @@ public class LevelHandler {
     public static int getCurrentLevelID() { return s_currentLevel.getID(); }
     public static String getCurrentLevelName() { return s_currentLevel.getName(); }
 
-    public static void addCollider(BoxCollider2D box) { s_colliders.add(box); }
-    public static void removeCollider(BoxCollider2D box) { s_colliders.remove(box); }
-
-    public static void executeQuadtree()
+    public static void addObject(int id, NSEObject obj)
     {
-        s_currentLevel.executeQuadtree();
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                s_levelList.get(i).addGameObject(obj);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
+    }
+
+    public static void addObject(String name, NSEObject obj)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                s_levelList.get(i).addGameObject(obj);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
     }
 }
