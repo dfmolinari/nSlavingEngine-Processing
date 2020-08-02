@@ -26,10 +26,14 @@
 package nse.tool;
 
 import processing.app.Base;
+import processing.app.SketchCode;
 import processing.app.tools.Tool;
 
 import javax.swing.*;
+import javax.swing.text.Document;
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,26 +56,35 @@ public class NSETools implements Tool {
     Object[] tools = { "Create Script","Reference" };
     String option = (String)JOptionPane.showInputDialog(null, "Select a tool","nSlavinEngine Tools",JOptionPane.QUESTION_MESSAGE,null,tools,"Create Script");
 
-    if(option == "Create Script")
+    if(option == "Create Script") //Create a new script file already setup
     {
       String scriptName = JOptionPane.showInputDialog(null,"Enter script name", "Create Script", JOptionPane.PLAIN_MESSAGE);
 
       if(scriptName != null)
       {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nclass " + scriptName + " extends NSEScript\n");
-        sb.append("{\n\n\t");
-        sb.append("//Gets executed when the level is loaded\n\tvoid Start()\n\t{\n\t\t\n\t}\n\n\t");
-        sb.append("//Gets executed once every frame\n\tvoid Update()\n\t{\n\t\t\n\t}\n");
-        sb.append("}\n");
-
-        base.getActiveEditor().insertText(sb.toString());
-
-        System.out.println("Created script: " + scriptName);
+        File script = new File(base.getActiveEditor().getSketch().getFolder().getAbsolutePath()+"\\"+scriptName+".pde");
+        try
+        {
+          if(script.createNewFile())
+          {
+            StringBuilder sb = new StringBuilder();
+            sb.append("class " + scriptName + " extends NSEScript\n");
+            sb.append("{\n\n\t");
+            sb.append("//Gets executed when the level is loaded\n\tvoid Start()\n\t{\n\t\t\n\t}\n\n\t");
+            sb.append("//Gets executed once every frame\n\tvoid Update()\n\t{\n\t\t\n\t}\n\n");
+            sb.append("}");
+            FileWriter writer = new FileWriter(script);
+            writer.write(sb.toString());
+            writer.close();
+            System.out.println("Created script: " + scriptName);
+          }
+        } catch (IOException e)
+        {
+          e.printStackTrace();
+        }
       }
-
       return;
-    } else if(option == "Reference")
+    } else if(option == "Reference") //Open reference page
     {
       if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
       {
