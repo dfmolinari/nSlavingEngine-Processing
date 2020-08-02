@@ -1,8 +1,9 @@
 package nse.objects;
 
 public abstract class NSEScript {
-    
-    public NSEObject transform;
+
+    public NSEObject gameObject;
+    public NSETransform transform;
 
     public abstract void Start();
     

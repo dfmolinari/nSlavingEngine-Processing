@@ -2,6 +2,7 @@ package nse.levels;
 
 import nse.collisions.BoxCollider2D;
 import nse.objects.NSEObject;
+import processing.core.PImage;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -101,5 +102,57 @@ public class LevelHandler {
             }
         }
         throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static void setBackground(String name, PImage image)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                s_levelList.get(i).setBackground(image);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot set background to level: " + name + "; It does not exist");
+    }
+
+    public static void setBackground(int id, PImage image)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                s_levelList.get(i).setBackground(image);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot set background to level: " + id + "; It does not exist");
+    }
+
+    public static void setBackground(String name, int color)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                s_levelList.get(i).setBackground(color);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static void setBackground(int id, int color)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                s_levelList.get(i).setBackground(color);
+                return;
+            }
+        }
+        throw new InvalidParameterException("Cannot set background to level: " + id + "; It does not exist");
     }
 }

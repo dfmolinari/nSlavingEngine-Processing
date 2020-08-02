@@ -1,51 +1,62 @@
 package nse.objects;
 
-import nse.levels.LevelHandler;
+import nse.ui.NSEBox;
+import nse.ui.NSEButton;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NSEObject {
 
-    private ArrayList<Object> m_components = new ArrayList<Object>();
+    private final Map<Class<?>,Object> m_components = new HashMap<>();
+
+    public NSETransform transform;
 
     private String m_objectName;
 
     public NSEObject(String objectName)
     {
         m_objectName = objectName;
-        addComponent(new NSETransform());
+        addComponent(NSETransform.class, new NSETransform());
+        transform = getComponent(NSETransform.class);
     }
 
-    public void addComponent(Object o)
+    public <T> void addComponent(Class<T> type, T component)
     {
-        for(int i = 0; i < m_components.size(); i++)
+        Object previous = m_components.putIfAbsent(type, component);
+        if(previous != null) throw new InvalidParameterException("Object already has a component of type " + type);
+
+        if(component instanceof NSEScript)
         {
-            if(m_components.get(i).getClass().isInstance(o)) throw new InvalidParameterException("Object already has a component of type " + o.getClass().getName());
+            ((NSEScript)component).gameObject = this;
+            ((NSEScript)component).transform = getComponent(NSETransform.class);
+        } else if(component instanceof NSEBox)
+        {
+            ((NSEBox)component).gameObject = this;
+            ((NSEBox)component).transform = getComponent(NSETransform.class);
+        } else if(component instanceof NSEButton)
+        {
+            ((NSEButton)component).gameObject = this;
+            ((NSEButton)component).transform = getComponent(NSETransform.class);
         }
-        if(o.getClass().isAssignableFrom(NSEScript.class))
-            ((NSEScript)o).transform = this;
-        m_components.add(o);
     }
 
     public <T> T getComponent(Class<T> comp)
     {
-        for(Object o : m_components)
+        T c = comp.cast(m_components.get(comp));
+        if(c == null)
         {
-            if(comp.isInstance(o)) return (T)o;
+            throw new InvalidParameterException(("Cannot find component of type " + comp.getName()));
         }
-
-        throw new InvalidParameterException("Cannot find component of type " + comp.getName());
+        return c;
     }
 
-    public ArrayList<Object> getComponents() { return m_components; }
+    public Collection<Object> getComponents() { return m_components.values(); }
 
     public <T> boolean hasComponent(Class<T> comp)
     {
-        for(Object o : m_components)
-        {
-            if(comp.isInstance(o)) return true;
-        }
-        return false;
+        return m_components.containsKey(comp);
     }
 }

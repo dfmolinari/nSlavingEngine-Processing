@@ -2,14 +2,12 @@ package nse.levels;
 
 import nse.Quadtree;
 import nse.collisions.*;
-import nse.objects.NSEObject;
-import nse.objects.NSEScript;
-import nse.objects.NSETransform;
+import nse.objects.*;
+import nse.ui.*;
 import processing.core.PApplet;
+import processing.core.PImage;
 
-import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +20,16 @@ import java.util.List;
 public class LevelBlueprint {
 
     private PApplet m_myApplet;
-    private Object m_myParent;
 
     private String m_name;
     private int m_nId;
 
     protected boolean m_resetLevel;
 
-    protected String m_start;
-    protected String m_update;
-
     private Quadtree quad;
+
+    private PImage m_backgroundImage;
+    private int m_backgroundColor;
 
     ArrayList<NSEObject> m_gameObjects = new ArrayList<NSEObject>();
 
@@ -43,21 +40,19 @@ public class LevelBlueprint {
      *
      * @param id the level ID
      * @param name the level name
-     * @param myParent the main applet used
+     * @param myApplet the main applet used
      */
-    public LevelBlueprint(int id, String name, PApplet myApplet, Object myParent){
+    public LevelBlueprint(int id, String name, PApplet myApplet){
         m_myApplet = myApplet;
-        m_myParent = myParent;
 
         quad = new Quadtree(0,new Rectangle(0,0,m_myApplet.width,m_myApplet.height));
 
         m_nId = id;
         m_name = name;
 
-        m_start = name+"Start";
-        m_update = name+"Update";
-
         m_resetLevel = true;
+
+        m_backgroundColor = myApplet.color(0,100,148);
 
         for(LevelBlueprint n : LevelHandler.s_levelList)
         {
@@ -73,40 +68,35 @@ public class LevelBlueprint {
     {
         if(m_resetLevel)
         {
-            try {
-                for(NSEObject o : m_gameObjects)
-                {
-                    for(Object b : o.getComponents())
-                    {
-                        if(o.getComponent(b.getClass()).getClass().isAssignableFrom(NSEScript.class))
-                            ((NSEScript)o.getComponent(b.getClass())).Start();
-                    }
-
-                }
-                m_myParent.getClass().getMethod(m_start).invoke(m_myParent);
-            } catch(ReflectiveOperationException e)
-            {
-                throw new RuntimeException(e);
-            }
-            m_resetLevel = false;
-        }
-        try {
             for(NSEObject o : m_gameObjects)
             {
                 for(Object b : o.getComponents())
                 {
-                    if(o.getComponent(b.getClass()).getClass().isAssignableFrom(NSEScript.class))
-                        ((NSEScript)o.getComponent(b.getClass())).Update();
-                    if(o.getComponent(b.getClass()) instanceof BoxCollider2D)
-                        o.getComponent(BoxCollider2D.class).setPosition(o.getComponent(NSETransform.class).getPosition());
+                    if(o.getComponent(b.getClass()) instanceof NSEScript)
+                        ((NSEScript)o.getComponent(b.getClass())).Start();
                 }
+
             }
-            executeQuadtree();
-            m_myParent.getClass().getMethod(m_update).invoke(m_myParent);
-        } catch(ReflectiveOperationException e)
-        {
-            throw new RuntimeException(e);
+            m_resetLevel = false;
         }
+        if(m_backgroundImage == null) m_myApplet.background(m_backgroundColor);
+        else m_myApplet.background(m_backgroundImage);
+
+        for(NSEObject o : m_gameObjects)
+        {
+            for(Object b : o.getComponents())
+            {
+                if(o.getComponent(b.getClass()) instanceof NSEScript)
+                    ((NSEScript)o.getComponent(b.getClass())).Update();
+                if(o.getComponent(b.getClass()) instanceof BoxCollider2D)
+                    o.getComponent(BoxCollider2D.class).setPosition(o.transform.position);
+                if(o.getComponent(b.getClass()) instanceof NSEBox)
+                    o.getComponent(NSEBox.class).display();
+                if(o.getComponent(b.getClass()) instanceof NSEButton)
+                    o.getComponent(NSEButton.class).display();
+            }
+        }
+        executeQuadtree();
     }
 
     /**
@@ -125,12 +115,10 @@ public class LevelBlueprint {
 
     protected void addGameObject(NSEObject obj)
     {
-
         m_gameObjects.add(obj);
-        m_myApplet.println(m_gameObjects.size());
     }
 
-    protected void executeQuadtree()
+    private void executeQuadtree()
     {
         quad.clear();
         for(int i = 0; i < m_gameObjects.size(); i++)
@@ -160,4 +148,7 @@ public class LevelBlueprint {
             }
         }
     }
+
+    protected void setBackground(PImage img) { img.resize(m_myApplet.width,m_myApplet.height); m_backgroundImage = img; }
+    protected void setBackground(int color) { m_backgroundColor = color; }
 }
