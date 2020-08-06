@@ -19,6 +19,11 @@ public class Rescaler {
         return s_currentHeight == s_defaultHeight ? value : (value * s_currentWidth) / s_defaultWidth;
     }
 
+    public static float resizeOnWidthIgnore(float value)
+    {
+        return (value * s_currentWidth) / s_defaultWidth;
+    }
+
     public static float getWidth() { return s_defaultWidth; }
     public static float getHalfWidth() { return s_defaultWidth/2; }
     public static float getHeight() { return s_defaultHeight; }

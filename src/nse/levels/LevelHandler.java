@@ -24,6 +24,8 @@ public class LevelHandler {
 
     static private InputManager s_im = null;
 
+    static private PApplet s_app;
+
     /**
      * Sets the current level to the level with the corresponding ID ||
      * WARNING: Trying to load a level with a non-existing ID will result in an error!
@@ -77,7 +79,8 @@ public class LevelHandler {
             s_im = new InputManager(b.m_myApplet);
             Input.setup(s_im);
             Rescaler.setSize(b.m_myApplet.width,b.m_myApplet.height);
-            s_currentLevel = b;
+            s_app = b.m_myApplet;
+            b.m_myApplet.noStroke();
         }
         s_levelList.add(b);
     }
@@ -158,6 +161,38 @@ public class LevelHandler {
         throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
     }
 
+    public static NSEObject findObjectSilent(String name, String obj)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                for(NSEObject ob : s_levelList.get(i).m_gameObjects)
+                {
+                    if(ob.getName().equalsIgnoreCase(obj)) return ob;
+                }
+                return null;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static NSEObject findObjectSilent(int id, String obj)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                for(NSEObject ob : s_levelList.get(i).m_gameObjects)
+                {
+                    if(ob.getName().equalsIgnoreCase(obj)) return ob;
+                }
+                return null;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
+    }
+
     public static void setBackground(String name, PImage image)
     {
         for(int i = 0; i < s_levelList.size(); i++)
@@ -212,7 +247,7 @@ public class LevelHandler {
 
     public static PApplet getApp()
     {
-        return s_currentLevel.m_myApplet;
+        return s_app;
 
     }
 }

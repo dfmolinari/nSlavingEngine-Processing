@@ -1,7 +1,9 @@
 package nse.ui;
 
+import nse.levels.LevelHandler;
 import nse.objects.NSEObject;
 import nse.objects.NSETransform;
+import nse.rendering.Camera;
 import nse.resizing.Rescaler;
 import processing.core.*;
 
@@ -42,8 +44,10 @@ public class NSEBox {
 
     public void display(){
 
-        rx = Rescaler.resizeOnWidth(transform.position.x);
-        ry = Rescaler.resizeOnHeight(transform.position.y);
+        NSEObject camRef = LevelHandler.findObjectSilent(LevelHandler.getCurrentLevelName(),"mainCamera");
+
+        rx = camRef == null ? Rescaler.resizeOnWidthIgnore(transform.position.x) : Rescaler.resizeOnWidthIgnore(transform.position.x+camRef.transform.position.x-Rescaler.getHalfWidth());
+        ry = camRef == null ? Rescaler.resizeOnHeight(transform.position.y) : Rescaler.resizeOnHeight(transform.position.y+camRef.transform.position.y-Rescaler.getHalfHeight());
         rw = Rescaler.resizeOnHeight(transform.scale.x);
         rh = Rescaler.resizeOnHeight(transform.scale.y);
 

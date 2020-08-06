@@ -3,6 +3,7 @@ package nse.levels;
 import nse.Quadtree;
 import nse.collisions.*;
 import nse.objects.*;
+import nse.rendering.Camera;
 import nse.rendering.Renderer;
 import nse.ui.*;
 import processing.core.PApplet;
@@ -97,13 +98,15 @@ public class LevelBlueprint {
                     ((NSEScript)o.getComponent(b.getClass())).deltaTime = deltaTime;
                     ((NSEScript)o.getComponent(b.getClass())).Update();
                 }
+                executeQuadtree();
+                if(o.getComponent(b.getClass()) instanceof Renderer)
+                    o.getComponent(Renderer.class).display();
                 if(o.getComponent(b.getClass()) instanceof NSEBox)
                     o.getComponent(NSEBox.class).display();
                 if(o.getComponent(b.getClass()) instanceof NSEButton)
                     o.getComponent(NSEButton.class).display();
-                executeQuadtree();
-                if(o.getComponent(b.getClass()) instanceof Renderer)
-                    o.getComponent(Renderer.class).display();
+                if(o.getComponent(b.getClass()) instanceof Camera)
+                    o.getComponent(Camera.class).calculateCamera();
             }
         }
     }

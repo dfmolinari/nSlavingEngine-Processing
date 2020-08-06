@@ -40,6 +40,8 @@ public class Player extends NSEScript
     
     float curXSpeed = m_speed * Input.getAxis("Horizontal") * deltaTime;
     
+    gameObject.getComponent(Renderer.class).setDir(curXSpeed > 0 ? Renderer.RIGHT : curXSpeed < 0 ? Renderer.LEFT : 0);
+    
     transform.position.add(curXSpeed, curYSpeed);
     
     if(Input.getButtonDown("ResOne"))

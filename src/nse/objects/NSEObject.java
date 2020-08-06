@@ -3,6 +3,7 @@ package nse.objects;
 import nse.collisions.BoxCollider2D;
 import nse.levels.LevelHandler;
 import nse.rendering.Animator;
+import nse.rendering.Camera;
 import nse.rendering.Renderer;
 import nse.ui.NSEBox;
 import nse.ui.NSEButton;
@@ -70,6 +71,10 @@ public class NSEObject {
         {
             ((Animator)component).gameObject = this;
             ((Animator)component).transform = getComponent(NSETransform.class);
+        } else if(component instanceof Camera)
+        {
+            ((Camera)component).gameObject = this;
+            ((Camera)component).transform = getComponent(NSETransform.class);
         }
     }
 

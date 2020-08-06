@@ -1,6 +1,7 @@
 package nse.ui;
 
 import nse.input.Input;
+import nse.levels.LevelHandler;
 import nse.objects.NSEObject;
 import nse.objects.NSETransform;
 import nse.resizing.Rescaler;
@@ -52,10 +53,15 @@ public class NSEButton {
 
     public void display(){
 
-        rx = Rescaler.resizeOnWidth(transform.position.x);
+        NSEObject camRef = LevelHandler.findObjectSilent(LevelHandler.getCurrentLevelName(),"mainCamera");
+
+        rx = Rescaler.resizeOnWidthIgnore(transform.position.x);
         ry = Rescaler.resizeOnHeight(transform.position.y);
         rw = Rescaler.resizeOnHeight(transform.scale.x);
         rh = Rescaler.resizeOnHeight(transform.scale.y);
+
+        float x = camRef == null ? Rescaler.resizeOnWidthIgnore(transform.position.x) : Rescaler.resizeOnWidthIgnore(transform.position.x+camRef.transform.position.x-Rescaler.getHalfWidth());
+        float y = camRef == null ? Rescaler.resizeOnHeight(transform.position.y) : Rescaler.resizeOnHeight(transform.position.y+camRef.transform.position.y-Rescaler.getHalfHeight());
 
         if(Input.getMouseButtonUp(37))
         {
@@ -78,18 +84,18 @@ public class NSEButton {
             if(m_img != null)
             {
                 m_myApplet.tint(m_baseColor);
-                m_myApplet.image(m_img,rx,ry,rw,rh);
+                m_myApplet.image(m_img,x,y,rw,rh);
             } else
             {
                 m_myApplet.fill(m_baseColor);
-                m_myApplet.rect(rx,ry,rw,rh);
+                m_myApplet.rect(x,y,rw,rh);
             }
             m_myApplet.fill(m_textColor);
             m_myApplet.textAlign(m_myApplet.CENTER, m_myApplet.CENTER);
             if(m_font != null)
                 m_myApplet.textFont(m_font);
             m_myApplet.textSize(m_fontSize);
-            m_myApplet.text(m_label, rx,ry,rw,rh);
+            m_myApplet.text(m_label, x,y,rw,rh);
             m_myApplet.fill(255);
             m_myApplet.rectMode(m_myApplet.CORNER);
             m_myApplet.imageMode(m_myApplet.CORNER);

@@ -14,9 +14,8 @@ void setup()
 {
   fullScreen(P3D);
   //surface.setLocation(displayWidth/2-1280/2,displayHeight/2-720/2);
-  surface.setSize(1280,720);
+  //surface.setSize(1920,720);
   surface.setResizable(true);
-  
   
   LevelHandler.createLevel(new LevelBlueprint(0,"mainMenu",g_appRef)); //creating "mainMenu" level
   LevelHandler.createLevel(new LevelBlueprint(1,"game",g_appRef));
@@ -28,8 +27,14 @@ void setup()
   Input.createButton("Res3","Button 2","");
   Input.createButton("Jump","space","Button 0");
   
+  //_____________________________________________________________________________________________________________________
+  //MENU MAIN CAMERA
+  NSEObject f = new NSEObject("mainCamera");
+  f.addComponent(Camera.class,new Camera());
+  LevelHandler.addObject("mainMenu",f);
+  
   //UIManager
-  NSEObject f = new NSEObject("manager");
+   f = new NSEObject("manager");
   f.addComponent(UIManager.class,new UIManager());
   LevelHandler.addObject("mainMenu",f);
   
@@ -53,7 +58,7 @@ void setup()
   f.transform.position.set(Rescaler.getHalfWidth(),Rescaler.getHalfHeight()-300);
   f.transform.scale.set(400,200);
   LevelHandler.addObject("mainMenu",f);
-  
+  //_____________________________________________________________________________________________________________________
   //PLAYER
   f = new NSEObject("player");
   Player p = new Player(); p.m_speed = 600; p.m_jumpSpeed = 550; p.m_fallSpeed = 15;
@@ -63,11 +68,17 @@ void setup()
   f.getComponent(Renderer.class).setColor(color(255,0,0));
   f.addComponent(BoxCollider2D.class, new BoxCollider2D(false,this));
   f.addComponent(Animator.class,new Animator());
-  f.getComponent(Animator.class).addAnimation("Idle",new Animation(true,0.17,this));
+  f.getComponent(Animator.class).addAnimation("Idle",new Animation(true,0.7,this));
   f.getComponent(Animator.class).getAnimation("Idle").addFrame(loadImage("Idle-0.png"));
   f.getComponent(Animator.class).getAnimation("Idle").addFrame(loadImage("Idle-1.png"));
   f.getComponent(Animator.class).getAnimation("Idle").addFrame(loadImage("Idle-2.png"));
   f.getComponent(Animator.class).playAnimation("Idle");
+  LevelHandler.addObject("game",f);
+  
+  //GAME MAIN CAMERA
+  f = new NSEObject("mainCamera");
+  f.addComponent(Camera.class,new Camera());
+  f.getComponent(Camera.class).setTarget(LevelHandler.findObject("game","player"));
   LevelHandler.addObject("game",f);
   
   f = new NSEObject("testCollider");
@@ -77,16 +88,11 @@ void setup()
   f.addComponent(Renderer.class,new Renderer(Renderer.RECT));
   f.getComponent(Renderer.class).setColor(color(0,255,0));
   LevelHandler.addObject("game",f);
-  
+  //_____________________________________________________________________________________________________________________
   LevelHandler.loadLevel("mainMenu"); //setting default level
 }
 
 void draw()
 {
   LevelHandler.displayLevel();
-  if(LevelHandler.getCurrentLevelName().equalsIgnoreCase("game"))
-  {
-    NSEObject p = LevelHandler.findObject("game","player");
-    camera(Rescaler.resizeOnWidth(p.transform.position.x), Rescaler.resizeOnHeight(p.transform.position.y), height / 2 / tan(PI * 30 / 180), Rescaler.resizeOnWidth(p.transform.position.x), Rescaler.resizeOnHeight(p.transform.position.y), 0, 0, 1, 0);
-  }
 }

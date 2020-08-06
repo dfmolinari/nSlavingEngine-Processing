@@ -38,7 +38,7 @@ public class Animation {
     public void stateHandler(NSEObject object, NSETransform transform){
         if(m_isPlaying) {
             m_myApplet.imageMode(m_myApplet.CENTER);
-            m_myApplet.image(frames.get(currentFrame), Rescaler.resizeOnWidth(transform.position.x),Rescaler.resizeOnHeight(transform.position.y),Rescaler.resizeOnHeight(transform.scale.x),Rescaler.resizeOnHeight(transform.scale.y));
+            m_myApplet.image(frames.get(currentFrame), 0,0,Rescaler.resizeOnHeight(transform.scale.x),Rescaler.resizeOnHeight(transform.scale.y));
             if (currentFrame < frames.size() - 1 && m_myApplet.millis() >= m_animFreq+m_readyCounter) {
                 m_readyCounter = m_myApplet.millis();
                 if(prevFrame == frames.size()-1 && !m_loop)
