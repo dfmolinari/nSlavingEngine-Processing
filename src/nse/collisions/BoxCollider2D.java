@@ -1,83 +1,48 @@
 package nse.collisions;
 
 import nse.levels.LevelHandler;
+import nse.objects.NSEObject;
+import nse.objects.NSETransform;
 import processing.core.PVector;
 
 import java.lang.reflect.Method;
 
 public class BoxCollider2D {
 
-    private PVector m_position;
-    private PVector m_size;
-    private PVector m_velocity;
-    private boolean m_pushable;
+    public NSEObject gameObject;
+    public NSETransform transform;
 
     private Object m_myParent;
+
+    private boolean m_isGrounded;
 
     //triggers
     private boolean m_isTrigger;
     private boolean m_canTrigger;
+    private boolean m_pushable;
     private String m_label;
 
-    public BoxCollider2D(PVector position, PVector size, boolean isTrigger, Object myParent)
+    private float prevY = 0;
+
+    public BoxCollider2D(boolean isTrigger, Object myParent)
     {
-        m_position = new PVector(position.x, position.y);
-        m_size = new PVector(size.x,size.y);
-        m_velocity = new PVector(0,0);
         m_isTrigger = isTrigger;
         m_pushable = false;
         m_canTrigger = true;
         m_label = "";
+        m_isGrounded = false;
         m_myParent = myParent;
     }
 
-    public BoxCollider2D(PVector position, PVector size, boolean isTrigger, String label, Object myParent)
+    public BoxCollider2D(boolean isTrigger, String label, Object myParent)
     {
-        m_position = new PVector(position.x, position.y);
-        m_size = new PVector(size.x,size.y);
-        m_velocity = new PVector(0,0);
         m_isTrigger = isTrigger;
         m_pushable = false;
         m_canTrigger = true;
         m_label = label;
+        m_isGrounded = false;
         m_myParent = myParent;
     }
-
-    public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, Object myParent)
-    {
-        m_position = new PVector(x,y);
-        m_size = new PVector(w,h);
-        m_velocity = new PVector(0,0);
-        m_isTrigger = isTrigger;
-        m_pushable = false;
-        m_canTrigger = true;
-        m_label = "";
-        m_myParent = myParent;
-    }
-
-    public BoxCollider2D(float x, float y, float w, float h, boolean isTrigger, String label, Object myParent)
-    {
-        m_position = new PVector(x,y);
-        m_size = new PVector(w,h);
-        m_velocity = new PVector(0,0);
-        m_isTrigger = isTrigger;
-        m_pushable = false;
-        m_canTrigger = true;
-        m_label = label;
-        m_myParent = myParent;
-    }
-
-    public PVector getPosition() { return m_position; }
-    public void setPosition(float x, float y) { m_position.set(x,y); }
-    public void setPosition(PVector position) { m_position.set(position.x,position.y); }
-
-    public PVector getSize() { return m_size; }
-    public void setSize(float x, float y) { m_size.set(x,y); }
-    public void setSize(PVector position) { m_size.set(position.x,position.y); }
-
-    public PVector getVelocity() { return m_velocity; }
-    public void setVelocity(PVector velocity) { m_velocity.set(velocity.x,velocity.y); }
-    public void setVelocity(float x, float y) { m_velocity.set(x,y); }
 
     public boolean isTrigger() { return m_isTrigger; }
     public void setTriggerLabel(String label) { m_label = label; }
@@ -88,11 +53,14 @@ public class BoxCollider2D {
 
     public void checkCollision(BoxCollider2D other, boolean ignoreJumps)
     {
-        float dx = m_position.x - other.getPosition().x;
-        float dy = m_position.y - other.getPosition().y;
+        //System.out.println(prevY + " " + transform.position.y);
+        //if(prevY == transform.position.y) m_isGrounded = true;
 
-        float hWidths = m_size.x/2 + other.getSize().x/2;
-        float hHeights = m_size.y/2 + other.getSize().y/2;
+        float dx = transform.position.x - other.transform.position.x;
+        float dy = transform.position.y - other.transform.position.y;
+
+        float hWidths = transform.scale.x/2 + other.transform.scale.x/2;
+        float hHeights = transform.scale.y/2 + other.transform.scale.y/2;
 
         if(Math.abs(dx) < hWidths && Math.abs(dy) < hHeights)
         {
@@ -101,48 +69,44 @@ public class BoxCollider2D {
                 float overlapX = hWidths - Math.abs(dx);
                 float overlapY = hHeights - Math.abs(dy);
 
-                if(overlapX >= overlapY)
+                if(overlapX > overlapY)
                 {
                     if(dy > 0)
                     {
-                        if(!ignoreJumps && m_velocity.y < 0)
+                        if(!ignoreJumps)
                         {
-                            //other.getPosition().y = m_position.y-m_size.y/2-other.m_size.y/2;
                             if(other.isPushable())
                             {
-                                other.getPosition().y = m_position.y-m_size.y/2-other.m_size.y/2;
+                                other.transform.position.y = transform.position.y-transform.scale.y/2-other.transform.scale.y/2;
                             }
-                            m_position.y = other.getPosition().y+other.getSize().y/2+m_size.y/2;
+                            transform.position.y = other.transform.position.y+other.transform.scale.y/2+transform.scale.y/2;
                         }
                     }
-                    else if(m_velocity.y > 0)
+                    else
                     {
                         if(other.isPushable())
                         {
-                            other.getPosition().y = m_position.y+m_size.y/2+other.getSize().y/2;
+                            other.transform.position.y = transform.position.y+transform.scale.y/2+other.transform.scale.y/2;
                         }
-                        m_position.y = other.getPosition().y-other.getSize().y/2-m_size.y/2;
+                        transform.position.y = other.transform.position.y-other.transform.scale.y/2-transform.scale.y/2;
+                        m_isGrounded = true;
                     }
                 } else
                 {
                     if(dx > 0)
                     {
-                        if(m_velocity.x < 0)
-                        {
-                            if(other.isPushable())
-                            {
-                                other.m_position.x = m_position.x-m_size.x/2-other.getSize().x/2;
-                            }
-                            m_position.x = other.getPosition().x+other.getSize().x/2+m_size.x/2;
+                        if(other.isPushable()) {
+                            other.transform.position.x = transform.position.x - transform.scale.x / 2 - other.transform.scale.x / 2;
                         }
+                        transform.position.x = other.transform.position.x+other.transform.scale.x/2+transform.scale.x/2;
                     }
-                    else if(m_velocity.x > 0)
+                    else
                     {
                         if(other.isPushable())
                         {
-                            other.m_position.x = m_position.x+m_size.x/2+other.getSize().x/2;
+                            other.transform.position.x = transform.position.x+transform.scale.x/2+other.transform.scale.x/2;
                         }
-                        m_position.x = other.getPosition().x-other.getSize().x/2-m_size.x/2;
+                        transform.position.x = other.transform.position.x-other.transform.scale.x/2-transform.scale.x/2;
                     }
                 }
             } else {
@@ -163,6 +127,7 @@ public class BoxCollider2D {
             else if(other.isTrigger() && !m_canTrigger)
                 other.onTriggerExit(this);
         }
+        prevY = transform.position.y;
     }
 
     /*public int checkCollision(Circle2D other)
@@ -244,5 +209,8 @@ public class BoxCollider2D {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean isGrounded() { return m_isGrounded; }
+    public void setGrounded(boolean state) { m_isGrounded = state; }
 
 }

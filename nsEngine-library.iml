@@ -8,6 +8,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" name="gluegen-rt-natives-linux-aarch64" level="project" />
+    <orderEntry type="library" name="Processing 3.5.4" level="project" />
+    <orderEntry type="library" name="GameControlPlus" level="project" />
   </component>
 </module>

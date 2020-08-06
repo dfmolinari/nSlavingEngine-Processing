@@ -1,7 +1,11 @@
 package nse.levels;
 
 import nse.collisions.BoxCollider2D;
+import nse.input.Input;
+import nse.input.InputManager;
 import nse.objects.NSEObject;
+import nse.resizing.Rescaler;
+import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.security.InvalidParameterException;
@@ -18,6 +22,8 @@ public class LevelHandler {
 
     static private LevelBlueprint s_currentLevel = null;
 
+    static private InputManager s_im = null;
+
     /**
      * Sets the current level to the level with the corresponding ID ||
      * WARNING: Trying to load a level with a non-existing ID will result in an error!
@@ -33,6 +39,7 @@ public class LevelHandler {
             {
                 s_currentLevel = n;
                 s_currentLevel.m_resetLevel = true;
+                return;
             }
         }
         if(s_currentLevel == null) throw new InvalidParameterException("Cannot load level: " + id + "; It does not exist");
@@ -53,6 +60,7 @@ public class LevelHandler {
             {
                 s_currentLevel = n;
                 s_currentLevel.m_resetLevel = true;
+                return;
             }
         }
         if(s_currentLevel == null) throw new InvalidParameterException("Cannot load level: " + name + "; It does not exist");
@@ -64,6 +72,13 @@ public class LevelHandler {
      * @param b the LevelBlueprint to add to the level list
      */
     public static void createLevel(LevelBlueprint b){
+        if(s_im == null)
+        {
+            s_im = new InputManager(b.m_myApplet);
+            Input.setup(s_im);
+            Rescaler.setSize(b.m_myApplet.width,b.m_myApplet.height);
+            s_currentLevel = b;
+        }
         s_levelList.add(b);
     }
 
@@ -72,8 +87,15 @@ public class LevelHandler {
      */
     public static void displayLevel()
     {
-        s_currentLevel.content();
+        Rescaler.setSize(s_currentLevel.m_myApplet.width,s_currentLevel.m_myApplet.height);
+        float time = s_currentLevel.m_myApplet.millis();
+        float deltaTime = (time - s_currentLevel.m_lastFrameTime)/1000;
+        s_currentLevel.m_lastFrameTime = time;
+        s_currentLevel.content(deltaTime);
+        Input.updateKeyStatus();
     }
+
+    public static void isManagerNull(){ if(s_im == null) System.out.print("null"); else System.out.println("not null");}
 
     public static int getCurrentLevelID() { return s_currentLevel.getID(); }
     public static String getCurrentLevelName() { return s_currentLevel.getName(); }
@@ -102,6 +124,38 @@ public class LevelHandler {
             }
         }
         throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static NSEObject findObject(String name, String obj)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                for(NSEObject ob : s_levelList.get(i).m_gameObjects)
+                {
+                    if(ob.getName().equalsIgnoreCase(obj)) return ob;
+                }
+                throw new InvalidParameterException("Cannot find object " + obj + "; It does not exist");
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static NSEObject findObject(int id, String obj)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                for(NSEObject ob : s_levelList.get(i).m_gameObjects)
+                {
+                    if(ob.getName().equalsIgnoreCase(obj)) return ob;
+                }
+                throw new InvalidParameterException("Cannot find object " + obj + "; It does not exist");
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
     }
 
     public static void setBackground(String name, PImage image)
@@ -154,5 +208,11 @@ public class LevelHandler {
             }
         }
         throw new InvalidParameterException("Cannot set background to level: " + id + "; It does not exist");
+    }
+
+    public static PApplet getApp()
+    {
+        return s_currentLevel.m_myApplet;
+
     }
 }

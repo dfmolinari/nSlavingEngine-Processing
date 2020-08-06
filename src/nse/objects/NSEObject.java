@@ -1,5 +1,9 @@
 package nse.objects;
 
+import nse.collisions.BoxCollider2D;
+import nse.levels.LevelHandler;
+import nse.rendering.Animator;
+import nse.rendering.Renderer;
 import nse.ui.NSEBox;
 import nse.ui.NSEButton;
 
@@ -32,6 +36,23 @@ public class NSEObject {
         {
             ((NSEScript)component).gameObject = this;
             ((NSEScript)component).transform = getComponent(NSETransform.class);
+            /*if(component.getClass().getAnnotation(RequireComponent.class) != null)
+            {
+                Class<?> comp = null;
+                try
+                {
+                    comp = Class.forName(component.getClass().getAnnotation(RequireComponent.class).component());
+                } catch(ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+
+                if(!hasComponent(comp)) addComponent(comp, comp.getConstructor());
+            }*/
+        } else if(component instanceof BoxCollider2D)
+        {
+            ((BoxCollider2D)component).gameObject = this;
+            ((BoxCollider2D)component).transform = getComponent(NSETransform.class);
         } else if(component instanceof NSEBox)
         {
             ((NSEBox)component).gameObject = this;
@@ -40,6 +61,15 @@ public class NSEObject {
         {
             ((NSEButton)component).gameObject = this;
             ((NSEButton)component).transform = getComponent(NSETransform.class);
+        } else if(component instanceof Renderer)
+        {
+            ((Renderer)component).gameObject = this;
+            ((Renderer)component).transform = getComponent(NSETransform.class);
+            ((Renderer)component).setupApplet(LevelHandler.getApp());
+        } else if(component instanceof Animator)
+        {
+            ((Animator)component).gameObject = this;
+            ((Animator)component).transform = getComponent(NSETransform.class);
         }
     }
 
@@ -59,4 +89,6 @@ public class NSEObject {
     {
         return m_components.containsKey(comp);
     }
+
+    public String getName() { return m_objectName; }
 }

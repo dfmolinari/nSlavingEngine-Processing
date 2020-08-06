@@ -44,7 +44,7 @@
 	<property name="project.src" location="src"/>
 	<property name="project.tmp" location="tmp"/>
 	<property name="project.web" location="web"/>
-	<property name="project.data" location="data"/>
+	<property name="project.data" location="../src/data"/>
 	<property name="project.lib" location="lib"/>
 	<property name="project.bin" location="bin"/>
 	<property name="project.bin.data" location="${project.bin}/data"/>
@@ -144,9 +144,9 @@ ${line}
 			</classpath>
 			<compilerarg value="-Xlint"/>
 		</javac>
-		<copy todir="${project.bin.data}">
-			<fileset dir="${project.data}" excludes="README" />
-		</copy>
+		<!--<copy todir="${project.bin.data}">
+			<fileset dir="/data" excludes="README" />
+		</copy>-->
 	</target>
 	
 	

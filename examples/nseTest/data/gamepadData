@@ -1,0 +1,17 @@
+Gamepad input
+gamepadYAx	Y axis	3	SLIDER	Y Axis	0	1.0	0.15
+gamepadXAx	X axis	3	SLIDER	X Axis	0	1.0	0.15
+gamepadYRot	Y rotation	3	SLIDER	Y Rotation	0	1.0	0.15
+gamepadXRot	X rotation	3	SLIDER	X Rotation	0	1.0	0.15
+gamepadTrigger	Triggers	3	SLIDER	Z Axis	0	1.0	0.15
+gamepad0	Button 0	1	BUTTON	Button 0	0	0.0	0.0
+gamepad1	Button 1	1	BUTTON	Button 1	0	0.0	0.0
+gamepad2	Button 2	1	BUTTON	Button 2	0	0.0	0.0
+gamepad3	Button 3	1	BUTTON	Button 3	0	0.0	0.0
+gamepad4	Left shoulder	1	BUTTON	Button 4	0	0.0	0.0
+gamepad5	Right shoulder	1	BUTTON	Button 5	0	0.0	0.0
+gamepad6	Select	1	BUTTON	Button 6	0	0.0	0.0
+gamepad7	Start	1	BUTTON	Button 7	0	0.0	0.0
+gamepad8	Left Thumb press	1	BUTTON	Button 8	0	0.0	0.0
+gamepad9	Right thumb press	1	BUTTON	Button 9	0	0.0	0.0
+gamepadHat	Hat switch	2	HAT	cooliehat: Hat Switch	0	1.0	0.0

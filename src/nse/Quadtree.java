@@ -60,10 +60,10 @@ public class Quadtree {
         double verticalMidpoint = m_bounds.getX() + (m_bounds.getWidth()/2);
         double horizontalMidpoint = m_bounds.getY() + (m_bounds.getHeight()/2);
 
-        float top = box.getPosition().y-box.getSize().y/2;
-        float bot = box.getPosition().y+box.getSize().y/2;
-        float left = box.getPosition().x-box.getSize().x/2;
-        float right = box.getPosition().x+box.getSize().x/2;
+        float top = box.transform.position.y-box.transform.scale.y/2;
+        float bot = box.transform.position.y+box.transform.scale.y/2;
+        float left = box.transform.position.x-box.transform.scale.x/2;
+        float right = box.transform.position.x+box.transform.scale.x/2;
 
         boolean topQuadrant = (top < horizontalMidpoint && bot < horizontalMidpoint);
         boolean bottomQuadrant = (top > horizontalMidpoint);

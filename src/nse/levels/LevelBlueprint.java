@@ -3,6 +3,7 @@ package nse.levels;
 import nse.Quadtree;
 import nse.collisions.*;
 import nse.objects.*;
+import nse.rendering.Renderer;
 import nse.ui.*;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class LevelBlueprint {
 
-    private PApplet m_myApplet;
+    protected PApplet m_myApplet;
 
     private String m_name;
     private int m_nId;
@@ -30,6 +31,8 @@ public class LevelBlueprint {
 
     private PImage m_backgroundImage;
     private int m_backgroundColor;
+
+    protected float m_lastFrameTime = 0.0f;
 
     ArrayList<NSEObject> m_gameObjects = new ArrayList<NSEObject>();
 
@@ -64,7 +67,7 @@ public class LevelBlueprint {
     /**
      * Executes the start method once then executes the update method.
      */
-    protected void content()
+    protected void content(float deltaTime)
     {
         if(m_resetLevel)
         {
@@ -73,7 +76,10 @@ public class LevelBlueprint {
                 for(Object b : o.getComponents())
                 {
                     if(o.getComponent(b.getClass()) instanceof NSEScript)
+                    {
+                        ((NSEScript) o.getComponent(b.getClass())).deltaTime = deltaTime;
                         ((NSEScript)o.getComponent(b.getClass())).Start();
+                    }
                 }
 
             }
@@ -87,16 +93,19 @@ public class LevelBlueprint {
             for(Object b : o.getComponents())
             {
                 if(o.getComponent(b.getClass()) instanceof NSEScript)
+                {
+                    ((NSEScript)o.getComponent(b.getClass())).deltaTime = deltaTime;
                     ((NSEScript)o.getComponent(b.getClass())).Update();
-                if(o.getComponent(b.getClass()) instanceof BoxCollider2D)
-                    o.getComponent(BoxCollider2D.class).setPosition(o.transform.position);
+                }
                 if(o.getComponent(b.getClass()) instanceof NSEBox)
                     o.getComponent(NSEBox.class).display();
                 if(o.getComponent(b.getClass()) instanceof NSEButton)
                     o.getComponent(NSEButton.class).display();
+                executeQuadtree();
+                if(o.getComponent(b.getClass()) instanceof Renderer)
+                    o.getComponent(Renderer.class).display();
             }
         }
-        executeQuadtree();
     }
 
     /**
