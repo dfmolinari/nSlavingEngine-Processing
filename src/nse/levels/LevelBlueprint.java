@@ -12,7 +12,9 @@ import processing.core.PImage;
 import java.awt.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Level class used to define levels and their content.
@@ -153,7 +155,7 @@ public class LevelBlueprint {
                 {
                     if(returnObjects.get(j) != m_gameObjects.get(i).getComponent(BoxCollider2D.class))
                     {
-                        //System.out.println("checking collision between" + ((BoxCollider2D) LevelHandler.s_colliders.get(i)).getTriggerLabel() + " and " + ((BoxCollider2D)returnObjects.get(j)).getTriggerLabel());
+                        //if(m_myApplet.frameCount % 30 == 0)System.out.println("checking collision between" + (m_gameObjects.get(i).getName() + " and " + ((BoxCollider2D) returnObjects.get(j)).gameObject.getName()));
                         m_gameObjects.get(i).getComponent(BoxCollider2D.class).checkCollision((BoxCollider2D)returnObjects.get(j),false);
                     }
                 }

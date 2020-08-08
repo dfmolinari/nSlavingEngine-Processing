@@ -46,10 +46,10 @@ public class Animation {
                 else
                     prevFrame = currentFrame++;
             } else if (currentFrame == frames.size() - 1 && m_loop && m_myApplet.millis() >= m_animFreq+m_readyCounter) {
-                m_myApplet.millis();
+                m_readyCounter = m_myApplet.millis();
                 prevFrame = frames.size() - 1;
                 currentFrame = 0;
-            } else if (currentFrame == frames.size() - 1 && !m_loop && m_readyCounter <= m_myApplet.millis()){
+            } else if (currentFrame == frames.size() - 1 && !m_loop && m_readyCounter+m_animFreq <= m_myApplet.millis()){
                 m_readyCounter = m_myApplet.millis();
                 prevFrame = frames.size()-1;
             }
@@ -73,5 +73,12 @@ public class Animation {
         prevFrame = 0;
         currentFrame = 0;
     }
+
+    public void setAnimationSpeed (float freq) { m_animFreq = freq * 1000; }
+    public float getAnimationSpeed () { return m_animFreq; }
+
+    public boolean isPlaying() { return m_isPlaying; }
+    public int getCurrentFrame() { return currentFrame; }
+    public int getFrameAmount() { return frames.size(); }
 
 }

@@ -5,12 +5,19 @@ import nse.objects.NSEObject;
 import nse.objects.NSETransform;
 import processing.core.PVector;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class BoxCollider2D {
 
     public NSEObject gameObject;
     public NSETransform transform;
+
+    private String m_tag;
+    private ArrayList<String> m_ignoreTags = new ArrayList<String>();
+
+    private ArrayList<BoxCollider2D> m_others = new ArrayList<BoxCollider2D>();
 
     private Object m_myParent;
 
@@ -20,6 +27,7 @@ public class BoxCollider2D {
     private boolean m_isTrigger;
     private boolean m_canTrigger;
     private boolean m_pushable;
+    private boolean m_disableClamping;
     private String m_label;
 
     private float prevY = 0;
@@ -32,6 +40,7 @@ public class BoxCollider2D {
         m_label = "";
         m_isGrounded = false;
         m_myParent = myParent;
+        m_tag = "Default";
     }
 
     public BoxCollider2D(boolean isTrigger, String label, Object myParent)
@@ -42,6 +51,7 @@ public class BoxCollider2D {
         m_label = label;
         m_isGrounded = false;
         m_myParent = myParent;
+        m_tag = "Default";
     }
 
     public boolean isTrigger() { return m_isTrigger; }
@@ -56,6 +66,13 @@ public class BoxCollider2D {
         //System.out.println(prevY + " " + transform.position.y);
         //if(prevY == transform.position.y) m_isGrounded = true;
 
+        if(m_ignoreTags.size() > 0)
+        {
+            for (int i = 0; i < m_ignoreTags.size(); i++) {
+                if (m_ignoreTags.get(i).equalsIgnoreCase(other.getTag())) return;
+            }
+        }
+
         float dx = transform.position.x - other.transform.position.x;
         float dy = transform.position.y - other.transform.position.y;
 
@@ -64,8 +81,11 @@ public class BoxCollider2D {
 
         if(Math.abs(dx) < hWidths && Math.abs(dy) < hHeights)
         {
-            if(!m_isTrigger && !other.isTrigger())
+            if(!m_others.contains(other)) m_others.add(other);
+
+            if(!m_isTrigger && !other.isTrigger() && !m_disableClamping)
             {
+
                 float overlapX = hWidths - Math.abs(dx);
                 float overlapY = hHeights - Math.abs(dy);
 
@@ -122,6 +142,8 @@ public class BoxCollider2D {
             }
         } else
         {
+            m_others.removeIf(boxCollider2D -> m_others.contains(boxCollider2D));
+
             if(m_isTrigger && !other.m_canTrigger)
                 onTriggerExit(other);
             else if(other.isTrigger() && !m_canTrigger)
@@ -210,7 +232,15 @@ public class BoxCollider2D {
         }
     }
 
+    public boolean canObjectClamp() { return m_disableClamping; }
+    public void setClampingState(boolean state) { m_disableClamping = state; }
+
     public boolean isGrounded() { return m_isGrounded; }
     public void setGrounded(boolean state) { m_isGrounded = state; }
 
+    public String getTag() { return m_tag; }
+    public void setTag(String tag) { m_tag = tag; }
+
+    public void addIgnoreTag(String tag) { m_ignoreTags.add(tag); }
+    public ArrayList<BoxCollider2D> getCollisions() { return m_others; }
 }

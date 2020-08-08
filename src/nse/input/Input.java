@@ -243,14 +243,14 @@ public class Input {
             boolean m = gm ? m_manager.m_gamepadButtons.containsKey(main) && m_manager.m_gamepadButtons.get(main) == 1
                            : getKeyDown(km);
             boolean a = ga ? m_manager.m_gamepadButtons.containsKey(alternative) && m_manager.m_gamepadButtons.get(alternative) == 1
-                    : m_manager.m_buttons.get(button).buttonToKey(alternative) > 0 && m_manager.m_buttons.get(button).buttonToKey(alternative) == 1;
+                    : getKeyDown(ka);
 
             returnValue = m || a;
         } else {
             int m = m_manager.m_buttons.get(button).buttonToKey(main);
             int a = m_manager.m_buttons.get(button).buttonToKey(alternative);
 
-            returnValue = (m_manager.m_keys.containsKey(m) && m_manager.m_keys.get(m) == 1)  || (m_manager.m_keys.containsKey(a) && m_manager.m_keys.get(a) == 1);
+            returnValue = getKeyDown(m)  || getKeyDown(a);
         }
 
         return returnValue;
@@ -272,16 +272,16 @@ public class Input {
             int ka = ga ? 0 : m_manager.m_buttons.get(button).buttonToKey(alternative);
 
             boolean m = gm ? m_manager.m_gamepadButtons.containsKey(main) && m_manager.m_gamepadButtons.get(main) == 2
-                    : getKeyDown(km);
+                    : getKey(km);
             boolean a = ga ? m_manager.m_gamepadButtons.containsKey(alternative) && m_manager.m_gamepadButtons.get(alternative) == 2
-                    : m_manager.m_buttons.get(button).buttonToKey(alternative) > 0 && m_manager.m_buttons.get(button).buttonToKey(alternative) == 2;
+                    : getKey(ka);
 
             returnValue = m || a;
         } else {
             int m = m_manager.m_buttons.get(button).buttonToKey(main);
             int a = m_manager.m_buttons.get(button).buttonToKey(alternative);
 
-            returnValue = (m_manager.m_keys.containsKey(m) && m_manager.m_keys.get(m) == 2)  || (m_manager.m_keys.containsKey(a) && m_manager.m_keys.get(a) == 2);
+            returnValue = getKey(m)  || getKey(a);
         }
 
         return returnValue;
@@ -303,16 +303,16 @@ public class Input {
             int ka = ga ? 0 : m_manager.m_buttons.get(button).buttonToKey(alternative);
 
             boolean m = gm ? m_manager.m_gamepadButtons.containsKey(main) && m_manager.m_gamepadButtons.get(main) == 3
-                    : getKeyDown(km);
+                    : getKeyUp(km);
             boolean a = ga ? m_manager.m_gamepadButtons.containsKey(alternative) && m_manager.m_gamepadButtons.get(alternative) == 3
-                    : m_manager.m_buttons.get(button).buttonToKey(alternative) > 0 && m_manager.m_buttons.get(button).buttonToKey(alternative) == 3;
+                    : getKeyUp(ka);
 
             returnValue = m || a;
         } else {
             int m = m_manager.m_buttons.get(button).buttonToKey(main);
             int a = m_manager.m_buttons.get(button).buttonToKey(alternative);
 
-            returnValue = (m_manager.m_keys.containsKey(m) && m_manager.m_keys.get(m) == 3)  || (m_manager.m_keys.containsKey(a) && m_manager.m_keys.get(a) == 3);
+            returnValue = getKeyDown(m)  || getKeyDown(a);
         }
 
         return returnValue;
@@ -348,7 +348,12 @@ public class Input {
             if(m_manager.m_mouseButtons.get(m.getKey()) == 1) m_manager.m_mouseButtons.put(m.getKey(),2);
         }
 
-        if(m_manager.gamepad != null) m_manager.m_gamepadButtons.entrySet().removeIf(e -> e.getValue() == 3);
+        if(m_manager.gamepad != null)
+        {
+            m_manager.setButtonPress();
+            m_manager.setButtonRelease();
+            m_manager.m_gamepadButtons.entrySet().removeIf(e -> e.getValue() == 4);
+        }
 
         m_manager.m_keys.entrySet().removeIf(e -> e.getValue() == 3);
         m_manager.m_mouseButtons.entrySet().removeIf(e -> e.getValue() == 3);

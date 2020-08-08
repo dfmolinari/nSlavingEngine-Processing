@@ -27,15 +27,15 @@ public class InputManager {
         m_myApplet = myApplet;
         m_myApplet.registerMethod("keyEvent",this);
         m_myApplet.registerMethod("mouseEvent",this);
-        control = ControlIO.getInstance(m_myApplet);
         initializeControlDevices();
     }
 
-    private void initializeControlDevices()
+    protected void initializeControlDevices()
     {
+        control = ControlIO.getInstance(m_myApplet);
         gamepad = control.getMatchedDeviceSilent("gamepadData");
         if(gamepad == null) { System.out.println("no gamepad connected"); }
-        else
+        /*else
         {
             for(int i = 0; i < gamepad.getNumberOfButtons()-1; i++)
             {
@@ -43,7 +43,7 @@ public class InputManager {
                 gamepad.getButton(i).plug(this,"setButtonHold",ControlIO.WHILE_PRESS);
                 gamepad.getButton(i).plug(this,"setButtonRelease",ControlIO.ON_RELEASE);
             }
-        }
+        }*/
     }
 
     public void keyEvent(KeyEvent e)
@@ -76,28 +76,249 @@ public class InputManager {
 
     public void setButtonPress()
     {
-        for(int i = 0; i < gamepad.getNumberOfButtons()-1; i++)
+        ControlButton b;
+        if(gamepad.getButton("Button 0").pressed() && !m_gamepadButtons.containsKey("Button 0"))
         {
-            ControlButton b = gamepad.getButton(i);
-            if(b.pressed())m_gamepadButtons.put(b.getName(),1);
+            b = gamepad.getButton("Button 0");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 0").pressed() && m_gamepadButtons.containsKey("Button 0") && m_gamepadButtons.get("Button 0") == 1)
+        {
+            b = gamepad.getButton("Button 0");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
         }
-    }
 
-    public void setButtonHold()
-    {
-        for(int i = 0; i < gamepad.getNumberOfButtons()-1; i++)
+        if(gamepad.getButton("Button 1").pressed() && !m_gamepadButtons.containsKey("Button 1"))
         {
-            ControlButton b = gamepad.getButton(i);
-            if(b.pressed())m_gamepadButtons.put(b.getName(),2);
+            b = gamepad.getButton("Button 1");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 1").pressed() && m_gamepadButtons.containsKey("Button 1") && m_gamepadButtons.get("Button 1") == 1)
+        {
+            b = gamepad.getButton("Button 1");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 2").pressed() && !m_gamepadButtons.containsKey("Button 2"))
+        {
+            b = gamepad.getButton("Button 2");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 2").pressed() && m_gamepadButtons.containsKey("Button 2") && m_gamepadButtons.get("Button 2") == 1)
+        {
+            b = gamepad.getButton("Button 2");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 3").pressed() && !m_gamepadButtons.containsKey("Button 3"))
+        {
+            b = gamepad.getButton("Button 3");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 3").pressed() && m_gamepadButtons.containsKey("Button 3") && m_gamepadButtons.get("Button 3") == 1)
+        {
+            b = gamepad.getButton("Button 3");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 4").pressed() && !m_gamepadButtons.containsKey("Button 4"))
+        {
+            b = gamepad.getButton("Button 4");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 4").pressed() && m_gamepadButtons.containsKey("Button 4") && m_gamepadButtons.get("Button 4") == 1)
+        {
+            b = gamepad.getButton("Button 4");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 5").pressed() && !m_gamepadButtons.containsKey("Button 5"))
+        {
+            b = gamepad.getButton("Button 5");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 5").pressed() && m_gamepadButtons.containsKey("Button 5") && m_gamepadButtons.get("Button 5") == 1)
+        {
+            b = gamepad.getButton("Button 5");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 6").pressed() && !m_gamepadButtons.containsKey("Button 6"))
+        {
+            b = gamepad.getButton("Button 6");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 6").pressed() && m_gamepadButtons.containsKey("Button 6") && m_gamepadButtons.get("Button 6") == 1)
+        {
+            b = gamepad.getButton("Button 6");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 7").pressed() && !m_gamepadButtons.containsKey("Button 7"))
+        {
+            b = gamepad.getButton("Button 7");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 7").pressed() && m_gamepadButtons.containsKey("Button 7") && m_gamepadButtons.get("Button 7") == 1)
+        {
+            b = gamepad.getButton("Button 7");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 8").pressed() && !m_gamepadButtons.containsKey("Button 8"))
+        {
+            b = gamepad.getButton("Button 8");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 8").pressed() && m_gamepadButtons.containsKey("Button 8") && m_gamepadButtons.get("Button 8") == 1)
+        {
+            b = gamepad.getButton("Button 8");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
+        }
+
+        if(gamepad.getButton("Button 9").pressed() && !m_gamepadButtons.containsKey("Button 9"))
+        {
+            b = gamepad.getButton("Button 9");
+            m_gamepadButtons.put(b.getName(),1);
+            return;
+        } else if (gamepad.getButton("Button 9").pressed() && m_gamepadButtons.containsKey("Button 9") && m_gamepadButtons.get("Button 9") == 1)
+        {
+            b = gamepad.getButton("Button 9");
+            m_gamepadButtons.put(b.getName(),2);
+            return;
         }
     }
 
     public void setButtonRelease()
     {
-        for(int i = 0; i < gamepad.getNumberOfButtons()-1; i++)
+        ControlButton b;
+        if(!gamepad.getButton("Button 0").pressed() && m_gamepadButtons.containsKey("Button 0") && m_gamepadButtons.get("Button 0") < 3)
         {
-            ControlButton b = gamepad.getButton(i);
-            if(!b.pressed() && m_gamepadButtons.containsKey(b.getName()))m_gamepadButtons.put(b.getName(),3);
+            b = gamepad.getButton("Button 0");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 0").pressed() && m_gamepadButtons.containsKey("Button 0") && m_gamepadButtons.get("Button 0") == 3)
+        {
+            b = gamepad.getButton("Button 0");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 1").pressed() && m_gamepadButtons.containsKey("Button 1") && m_gamepadButtons.get("Button 1") < 3)
+        {
+            b = gamepad.getButton("Button 1");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 1").pressed() && m_gamepadButtons.containsKey("Button 1") && m_gamepadButtons.get("Button 1") == 3)
+        {
+            b = gamepad.getButton("Button 1");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 2").pressed() && m_gamepadButtons.containsKey("Button 2") && m_gamepadButtons.get("Button 2") < 3)
+        {
+            b = gamepad.getButton("Button 2");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 2").pressed() && m_gamepadButtons.containsKey("Button 2") && m_gamepadButtons.get("Button 2") == 3)
+        {
+            b = gamepad.getButton("Button 2");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 3").pressed() && m_gamepadButtons.containsKey("Button 3") && m_gamepadButtons.get("Button 3") < 3)
+        {
+            b = gamepad.getButton("Button 3");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 3").pressed() && m_gamepadButtons.containsKey("Button 3") && m_gamepadButtons.get("Button 3") == 3)
+        {
+            b = gamepad.getButton("Button 3");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 4").pressed() && m_gamepadButtons.containsKey("Button 4") && m_gamepadButtons.get("Button 4") < 3)
+        {
+            b = gamepad.getButton("Button 4");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 4").pressed() && m_gamepadButtons.containsKey("Button 4") && m_gamepadButtons.get("Button 4") == 3)
+        {
+            b = gamepad.getButton("Button 4");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 5").pressed() && m_gamepadButtons.containsKey("Button 5") && m_gamepadButtons.get("Button 5") < 3)
+        {
+            b = gamepad.getButton("Button 5");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 5").pressed() && m_gamepadButtons.containsKey("Button 5") && m_gamepadButtons.get("Button 5") == 3)
+        {
+            b = gamepad.getButton("Button 5");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 6").pressed() && m_gamepadButtons.containsKey("Button 6") && m_gamepadButtons.get("Button 6") < 3)
+        {
+            b = gamepad.getButton("Button 6");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 6").pressed() && m_gamepadButtons.containsKey("Button 6") && m_gamepadButtons.get("Button 6") == 3)
+        {
+            b = gamepad.getButton("Button 6");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 7").pressed() && m_gamepadButtons.containsKey("Button 7") && m_gamepadButtons.get("Button 7") < 3)
+        {
+            b = gamepad.getButton("Button 7");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 7").pressed() && m_gamepadButtons.containsKey("Button 7") && m_gamepadButtons.get("Button 7") == 3)
+        {
+            b = gamepad.getButton("Button 7");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 8").pressed() && m_gamepadButtons.containsKey("Button 8") && m_gamepadButtons.get("Button 8") < 3)
+        {
+            b = gamepad.getButton("Button 8");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 8").pressed() && m_gamepadButtons.containsKey("Button 8") && m_gamepadButtons.get("Button 8") == 3)
+        {
+            b = gamepad.getButton("Button 8");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
+        }
+
+        if(!gamepad.getButton("Button 9").pressed() && m_gamepadButtons.containsKey("Button 9") && m_gamepadButtons.get("Button 9") < 3)
+        {
+            b = gamepad.getButton("Button 9");
+            m_gamepadButtons.put(b.getName(),3);
+            return;
+        } else if(!gamepad.getButton("Button 9").pressed() && m_gamepadButtons.containsKey("Button 9") && m_gamepadButtons.get("Button 9") == 3)
+        {
+            b = gamepad.getButton("Button 9");
+            m_gamepadButtons.put(b.getName(),4);
+            return;
         }
     }
 

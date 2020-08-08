@@ -193,6 +193,30 @@ public class LevelHandler {
         throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
     }
 
+    public static ArrayList<NSEObject> getObjects(String name)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getName() == name)
+            {
+                return s_levelList.get(i).m_gameObjects;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + name + "; It does not exist");
+    }
+
+    public static ArrayList<NSEObject> getObjects(int id)
+    {
+        for(int i = 0; i < s_levelList.size(); i++)
+        {
+            if(s_levelList.get(i).getID() == id)
+            {
+                return s_levelList.get(i).m_gameObjects;
+            }
+        }
+        throw new InvalidParameterException("Cannot add object to level: " + id + "; It does not exist");
+    }
+
     public static void setBackground(String name, PImage image)
     {
         for(int i = 0; i < s_levelList.size(); i++)
@@ -248,6 +272,5 @@ public class LevelHandler {
     public static PApplet getApp()
     {
         return s_app;
-
     }
 }

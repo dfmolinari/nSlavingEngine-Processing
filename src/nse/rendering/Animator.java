@@ -54,6 +54,8 @@ public class Animator {
         }
     }
 
+    public Map<String,Animation> getAnimationList() { return m_animationList; }
+
     public void pauseAnimation(String name){
         m_animationList.get(name).pause();
     }
@@ -61,5 +63,7 @@ public class Animator {
     public void stopAnimation(String name){
         m_animationList.get(name).stop();
     }
+
+    public String getCurrentAnimation() { return m_currentAnimation; }
 
 }

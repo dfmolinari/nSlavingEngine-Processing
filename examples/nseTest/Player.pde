@@ -7,9 +7,6 @@ public class Player extends NSEScript
   private float m_fallSpeed;
   
   private float curYSpeed;
-  
-  private float prevX;
-  private float prevY;
 
   void Start()
   {
@@ -21,12 +18,10 @@ public class Player extends NSEScript
   {
     boolean wasGrounded = gameObject.getComponent(BoxCollider2D.class).isGrounded();
     
-    if(wasGrounded)
+    if(wasGrounded){
       curYSpeed = 0;
-      
-    if(wasGrounded)
       gameObject.getComponent(BoxCollider2D.class).setGrounded(true);
-    
+    }
     if(Input.getButtonDown("Jump") && gameObject.getComponent(BoxCollider2D.class).isGrounded())
     {
       gameObject.getComponent(BoxCollider2D.class).setGrounded(false);
